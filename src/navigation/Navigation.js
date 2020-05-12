@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import Dashboard from '../screens/Dashboard';
-import useTheme from '../themes/Hooks';
+import useTheme from '../themes/ThemeHooks';
 
 
 

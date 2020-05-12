@@ -1,7 +1,7 @@
 import Fonts from './Fonts'
 import Metrics from './Metrics'
 import Colors from './Colors'
-import useTheme from './Hooks';
+import useTheme from './ThemeHooks';
 
 
 // This file is for a reusable grouping of Theme items.
