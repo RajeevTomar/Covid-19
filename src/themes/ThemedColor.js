@@ -12,6 +12,7 @@ import Colors from './Colors';
         actionbarColor:'#464646',
         titleColor:'white',
         background: '#464646',
+        statBackground:Colors.coal,
         error: 'rgba(200, 0, 0, 0.8)',
         border: '#483F53',
         header: 'white',

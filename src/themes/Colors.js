@@ -1,9 +1,10 @@
 import Platform from 'react';
 
 const colors = {
+   statBackground:'white',
     actionbarColor:'white',
     titleColor:'#464646',
-    background: 'white',
+    background: '#F3F5F6',
     clear: 'rgba(0,0,0,0)',
     facebook: '#3b5998',
     transparent: 'rgba(0,0,0,0)',
@@ -26,9 +27,13 @@ const colors = {
     header:'rgba(1, 1, 1, 0.9)',
     textColor:'#f2f2f2',
     sourceColor:'#bababa',
+    black:'#000',
     
     snow: 'white',
     red: '#E64044',
+    blue:'#0F0',
+    green:'#008000',
+      
     redShadow: '#E83E3F',
     silver: '#F3F5F6',
     purple: '#5C195A',

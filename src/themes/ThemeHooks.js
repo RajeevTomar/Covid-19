@@ -1,12 +1,12 @@
-import { useColorScheme } from 'react-native-appearance'
-import { ThemedColors } from '.'
+//import { useColorScheme } from 'react-native-appearance'
+import ThemedColors  from './ThemedColor'
 
 const UseTheme = () => {
-    const theme = useColorScheme()
-    const colors = theme ? ThemedColors[theme] : ThemedColors.default
+    //const theme = useColorScheme()
+    const colors = ThemedColors.default;// theme ? ThemedColors[theme] : ThemedColors.default;
     return {
       colors,
-      theme,
+      //theme,
     }
   }
 
