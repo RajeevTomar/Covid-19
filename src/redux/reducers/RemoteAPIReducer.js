@@ -18,9 +18,9 @@ const liveStateWiseAndTestData = (state = LIVE_STATE_INITIAL_STATE, action) => {
         case FETCH_STATE_DISTRICT_TEST_DATA:
             return { ...state, isLoading: false, ...action.payload};
         case HTTP_ERROR:
-            return { ...state, isLoading: false, error: action.paylaod };
+            return { ...state, isLoading: false, error: action.payload };
         case SHOW_LOADING:
-            return { ...state, isLoading: action.paylaod };
+            return { ...state, isLoading: action.payload };
         default:
             return state;
     }

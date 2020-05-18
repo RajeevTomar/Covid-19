@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import Dashboard from '../screens/Dashboard';
 import useTheme from '../themes/ThemeHooks';
+import StateScreen from '../screens/StateScreen';
 
 
 
@@ -26,6 +27,10 @@ function Navigation() {
         <Stack.Screen name="Dashboard"
           component={Dashboard}
           options={{ title: 'DASHBOARD', headerTitleAlign:'center'}}
+        />
+         <Stack.Screen name="StateScreen"
+          component={StateScreen}
+          options={{ title: '', headerTitleAlign:'center'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
