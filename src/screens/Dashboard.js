@@ -1,65 +1,120 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, FlatList, TouchableHighlight } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchLiveStateWiseAndTestData } from '../redux/actions/RemoteAPIAction';
+import { fetchLiveStateWiseAndTestData, fetchZones } from '../redux/actions/RemoteAPIAction';
 import style from '../styles/DashboardStyle';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
 import ActivityIndicator from '../components/ScreenLoader';
-//import GetLocation from 'react-native-get-location';
+import GetLocation from 'react-native-get-location';
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import HeaderView from '../components/HeaderView';
-
+import axios from 'axios';
+import { CURRENT_LOC_ZONE_URL } from '../server/Url';
+import { ZONE_API_KEY } from '../Constant';
 
 const Dashboard = (props) => {
 
+    // navigation
     const navigation = props.navigation;
 
+    // redux dispatcb
     const dispatch = useDispatch();
-    useEffect(() => {
-        // fetch all live stats and test data
-        dispatch(fetchLiveStateWiseAndTestData);
-
-    }, []);
 
     // read data from store
     const { isLoading, error, liveData, stateWise, testData } =
         useSelector(state => state.allStats);
 
+    const { liveZone, allZone } = useSelector(state => state.allZones)
+
     // remove first item from list   
     const stateList = (liveData != null && liveData.length > 0) ? liveData.slice(1) : null;
+
+    useEffect(() => {
+        // fetch all live stats and test data
+        dispatch(fetchLiveStateWiseAndTestData);
+
+        // get current location
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+            .then(location => {
+                if (location != null) {
+                    const latitude = location.latitude;
+                    const longitude = location.longitude;
+                    // fetch all live stats and test data
+                    //dispatch(fetchZones(latitude, longitude));
+                    dispatch(fetchZones(28.708881, 77.655746));
+                }
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message);
+            });
+
+    }, []);
 
     const TableView = ({ title, total, delta, textColor }) => {
         return (
             <View style={style.columnView}>
                 <Text style={style.statusText}>{title}</Text>
                 <Text style={{ ...style.countText, color: textColor }}>{total}</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                {delta > 0 && <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <Image style={{ ...style.arrowImage, tintColor: textColor }} source={require('../images/icon_plus.png')}
                         tintColor='{textColor}' />
                     <Text style={{ ...style.deltaText, color: textColor }}>{delta}</Text>
-                </View>
+                </View>}
             </View>
         );
     }
 
 
     const ColumnView = ({ totalStat, title }) => {
-        if (totalStat == null || totalStat == 'undefined') {
-            // fetch data from 
-            return null;
-        }
         if (title == null || title == 'undefined')
             title = totalStat.state;
 
+        if (totalStat == 'undefined' && liveZone != null && allZone != null) {
+            // filter data bw liveZone and allZone
+            const liveZoneDistrict = liveZone.district;
+            let locatedZone = allZone.filter(zone => {
+                return liveZoneDistrict == zone.district
+            })
+            if (locatedZone != null && locatedZone != 'undefined') {
+                const stateCode = locatedZone[0].statecode;
+                if (stateCode != null && stateCode != 'undefined') {
+                    // filter from district
+                    let locatedstate = stateWise.filter(state => {
+                        return stateCode == state.statecode
+                    });
+                    // get final district
+                    if (locatedstate != null && locatedstate != 'undefined') {
+                        let locatedDistrict = locatedstate[0].districtData.filter(item => {
+                            return item.district == liveZoneDistrict;
+                        })
+                        if (locatedDistrict != null && locatedDistrict.length > 0) {
+                            const locationDistrictObj = locatedDistrict[0];
+                            totalStat = {
+                                confirmed: locationDistrictObj.confirmed,
+                                recovered: locationDistrictObj.recovered,
+                                deaths: locationDistrictObj.deceased,
+                                deltaconfirmed: locationDistrictObj.delta.confirmed,
+                                deltarecovered: locationDistrictObj.delta.recovered,
+                                deltadeaths: locationDistrictObj.delta.deceased,
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return (
             <View>
                 <Text style={style.locationText}>{title}</Text>
-                <View style={style.rowContainer}>
+                {totalStat && <View style={style.rowContainer}>
                     <TableView title='Confirmed' total={totalStat.confirmed} delta={totalStat.deltaconfirmed} textColor={useTheme().colors.red} />
                     <TableView title='Recovered' total={totalStat.recovered} delta={totalStat.deltarecovered} textColor={useTheme().colors.green} />
                     <TableView title='Deceased' total={totalStat.deaths} delta={totalStat.deltadeaths} textColor={useTheme().colors.lightColor} />
-                </View>
+                </View>}
             </View>
         );
     }
@@ -113,7 +168,7 @@ const Dashboard = (props) => {
     return (
         <View style={style.mainContainer}>
             {liveData && <View style={style.statContainer}>
-                <ColumnView totalStat={'undefined'} />
+                {liveZone && allZone && <ColumnView totalStat={'undefined'} title={liveZone.district} />}
                 <View style={style.divider} />
                 <ColumnView totalStat={liveData[0]} title='Across India' />
             </View>}
