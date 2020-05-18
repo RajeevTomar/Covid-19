@@ -70,15 +70,15 @@ const Dashboard = (props) => {
                 <View>
                     <View style={{
                         ...style.rowContainer, justifyContent: 'space-around',
-                        paddingTop: Metrics.baseMargin, paddingBottom: Metrics.baseMargin,
+                        paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
                     }}>
                         <Text style={{
-                            ...style.countText, flex: 1.5, color: useTheme().colors.black,
+                            ...style.countText, flex: 1, color: useTheme().colors.black,
                             marginLeft: Metrics.baseMargin, fontWeight: 'normal'
                         }}>{state.state}</Text>
                         <StateDistrictCellView total={state.confirmed} delta={state.deltaconfirmed} textColor={useTheme().colors.red} />
                         <StateDistrictCellView total={state.recovered} delta={state.deltarecovered} textColor={useTheme().colors.green} />
-                        <StateDistrictCellView total={state.deaths} delta={state.deltadeaths} textColor={useTheme().colors.black} />
+                        <StateDistrictCellView total={state.deaths} delta={state.deltadeaths} textColor={useTheme().colors.redShadow} />
                     </View>
                     <View style={{ ...style.divider, margin: Metrics.tinyMargin }}></View>
                 </View>

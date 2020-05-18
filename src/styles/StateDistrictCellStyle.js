@@ -10,7 +10,7 @@ export default StyleSheet.create({
     },
     countText:{
         fontSize: Fonts.size.medium,
-        color: useTheme().colors.red,
+        color: useTheme().colors.coal,
         padding:Metrics.smallMargin,
         justifyContent:'center',
         fontWeight:'bold',

@@ -31,15 +31,15 @@ export default StateScreen = (props) => {
       <View>
         <View style={{
           ...style.rowContainer, justifyContent: 'space-around',
-          paddingTop: Metrics.baseMargin, paddingBottom: Metrics.baseMargin,
+          paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
         }}>
           <Text style={{
-            ...style.countText, flex: 1.5, color: useTheme().colors.black,
+            ...style.countText, flex: 1, color: useTheme().colors.black,
             marginLeft: Metrics.baseMargin, fontWeight: 'normal'
           }}>{district.district}</Text>
           <StateDistrictCellView total={district.confirmed} delta={district.delta.confirmed} textColor={useTheme().colors.red} />
           <StateDistrictCellView total={district.recovered} delta={district.delta.recovered} textColor={useTheme().colors.green} />
-          <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={useTheme().colors.black} />
+          <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={useTheme().colors.redShadow} />
         </View>
         <View style={{ ...style.divider, margin: Metrics.tinyMargin }}></View>
       </View>
