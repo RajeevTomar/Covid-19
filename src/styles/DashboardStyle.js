@@ -21,7 +21,7 @@ export default StyleSheet.create({
 
     locationText: {
         fontSize: Fonts.size.medium,
-        color: useTheme().colors.black,
+        color: useTheme().colors.textColor,
         padding: Metrics.baseMargin,
         fontWeight: 'bold',
         justifyContent: 'flex-start'
@@ -29,7 +29,7 @@ export default StyleSheet.create({
 
     statusText: {
         fontSize: Fonts.size.small,
-        color: useTheme().colors.black,
+        color: useTheme().colors.textColor,
         padding: Metrics.smallMargin,
         justifyContent: 'flex-start'
     },

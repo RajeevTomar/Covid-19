@@ -34,12 +34,12 @@ export default StateScreen = (props) => {
           paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
         }}>
           <Text style={{
-            ...style.countText, flex: 1, color: useTheme().colors.black,
+            ...style.countText, flex: 1, color: useTheme().colors.textColor,
             marginLeft: Metrics.baseMargin, fontWeight: 'normal'
           }}>{district.district}</Text>
           <StateDistrictCellView total={district.confirmed} delta={district.delta.confirmed} textColor={useTheme().colors.red} />
           <StateDistrictCellView total={district.recovered} delta={district.delta.recovered} textColor={useTheme().colors.green} />
-          <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={useTheme().colors.redShadow} />
+          <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={useTheme().colors.lightColor} />
         </View>
         <View style={{ ...style.divider, margin: Metrics.tinyMargin }}></View>
       </View>

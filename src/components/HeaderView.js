@@ -10,10 +10,10 @@ export default HeaderView = ({header}) => {
             ...style.rowContainer, justifyContent: 'space-between',
             padding: Metrics.baseMargin, marginTop: Metrics.baseMargin
         }}>
-            <Text style={{ ...style.headerText, flex: 1.5, color: useTheme().colors.black, }}>{header[0]}</Text>
+            <Text style={{ ...style.headerText, flex: 1.5, color: useTheme().colors.textColor, }}>{header[0]}</Text>
             <Text style={{ ...style.headerText, color: useTheme().colors.red, fontWeight: 'normal' }}>{header[1]}</Text>
             <Text style={{ ...style.headerText, color: useTheme().colors.green, fontWeight: 'normal' }}>{header[2]}</Text>
-            <Text style={{ ...style.headerText, color: useTheme().colors.black, fontWeight: 'normal' }}>{header[3]}</Text>
+            <Text style={{ ...style.headerText, color: useTheme().colors.textColor, fontWeight: 'normal' }}>{header[3]}</Text>
         </View>
     );
 }

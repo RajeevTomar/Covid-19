@@ -17,6 +17,7 @@ import Colors from './Colors';
         border: '#483F53',
         header: 'white',
         textColor: 'white',
+        lightColor:'#fd7e14'
     },
 }
 

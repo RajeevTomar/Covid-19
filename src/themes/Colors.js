@@ -25,10 +25,10 @@ const colors = {
     border: '#483F53',
     banner: '#5F3E63',
     header:'rgba(1, 1, 1, 0.9)',
-    textColor:'#f2f2f2',
+    textColor:'#2d2d2d',
     sourceColor:'#bababa',
     black:'#000',
-    
+    lightColor:'#fd7e14',
     snow: 'white',
     red: '#E64044',
     blue:'#0F0',

@@ -58,7 +58,7 @@ const Dashboard = (props) => {
                 <View style={style.rowContainer}>
                     <TableView title='Confirmed' total={totalStat.confirmed} delta={totalStat.deltaconfirmed} textColor={useTheme().colors.red} />
                     <TableView title='Recovered' total={totalStat.recovered} delta={totalStat.deltarecovered} textColor={useTheme().colors.green} />
-                    <TableView title='Deceased' total={totalStat.deaths} delta={totalStat.deltadeaths} textColor={useTheme().colors.black} />
+                    <TableView title='Deceased' total={totalStat.deaths} delta={totalStat.deltadeaths} textColor={useTheme().colors.lightColor} />
                 </View>
             </View>
         );
@@ -73,12 +73,12 @@ const Dashboard = (props) => {
                         paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
                     }}>
                         <Text style={{
-                            ...style.countText, flex: 1, color: useTheme().colors.black,
+                            ...style.countText, flex: 1, color: useTheme().colors.textColor,
                             marginLeft: Metrics.baseMargin, fontWeight: 'normal'
                         }}>{state.state}</Text>
                         <StateDistrictCellView total={state.confirmed} delta={state.deltaconfirmed} textColor={useTheme().colors.red} />
                         <StateDistrictCellView total={state.recovered} delta={state.deltarecovered} textColor={useTheme().colors.green} />
-                        <StateDistrictCellView total={state.deaths} delta={state.deltadeaths} textColor={useTheme().colors.redShadow} />
+                        <StateDistrictCellView total={state.deaths} delta={state.deltadeaths} textColor={useTheme().colors.lightColor} />
                     </View>
                     <View style={{ ...style.divider, margin: Metrics.tinyMargin }}></View>
                 </View>
