@@ -17,7 +17,7 @@ District Wise Cases
 ![Simulator Screen Shot - iPhone 7 - 2020-05-18 at 18 17 59](https://user-images.githubusercontent.com/1740986/82214771-f28e1100-9933-11ea-8d72-48c475ebeab7.png)
 
 
-Credits
+# Credits
 
-Team behind Covid19India for gathering statistics across India and providing API. https://www.covid19india.org/
-GeoIQ for providing API for location based Covid19 information. https://www.geoiq.io/
+1. Team behind Covid19India for gathering statistics across India and providing API. https://www.covid19india.org/
+2. GeoIQ for providing API for location based Covid19 information. https://www.geoiq.io/
