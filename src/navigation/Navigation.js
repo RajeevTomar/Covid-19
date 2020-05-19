@@ -16,7 +16,7 @@ function Navigation() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Dashboard" screenOptions={{
         headerStyle: {
-          backgroundColor: colors.actionbarColor,
+          backgroundColor: colors.background,
         },
         headerTintColor: colors.titleColor,
         headerTitleStyle: {

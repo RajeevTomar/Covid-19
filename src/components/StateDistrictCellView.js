@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
-import style from '../styles/StateDistrictCellStyle';
+import StateDistrictCellStyle from '../styles/StateDistrictCellStyle';
 
 
 
 export default StateDistrictCellView = ({ total, delta, textColor }) => {
+    const {style} = StateDistrictCellStyle();
     return (
         <View style={{ ...style.columnView, flex: 1 }}>
             <Text style={{ ...style.countText,  }}>{total}</Text>

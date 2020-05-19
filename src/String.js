@@ -1,0 +1,1 @@
+export const CONTAINMENT_ZONE_MESSAGE = 'You are in Containment Zone. Please keep distancing and be safe.';

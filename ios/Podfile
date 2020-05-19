@@ -79,6 +79,8 @@ target 'Covid19' do
 
   pod 'ReactNativeGetLocation', :path => '../node_modules/react-native-get-location'
 
+  pod 'react-native-appearance', :path => '../node_modules/react-native-appearance'
+
   target 'Covid19Tests' do
     inherit! :complete
     # Pods for testing

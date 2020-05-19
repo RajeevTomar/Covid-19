@@ -4,40 +4,60 @@ import { StyleSheet } from 'react-native';
 import StateDistrictCellStyle from './StateDistrictCellStyle';
 import HeaderViewStyle from './HeaderViewStyle';
 
-export default StyleSheet.create({
-    ...ApplicationStyles.screen,
-    ...StateDistrictCellStyle,
-    ...HeaderViewStyle,
-    statContainer: {
-        backgroundColor: useTheme().colors.statBackground,
-        marginTop: Metrics.baseMargin,
-        marginLeft: Metrics.doubleBaseMargin,
-        marginRight: Metrics.doubleBaseMargin,
-        borderRadius: 10,
-        borderWidth: 4,
-        paddingBottom: Metrics.baseMargin,
-        borderColor: useTheme().colors.background
-    },
+export default DashboardStyle = () =>{
+    const {colors} = useTheme();
 
-    locationText: {
-        fontSize: Fonts.size.medium,
-        color: useTheme().colors.textColor,
-        padding: Metrics.baseMargin,
-        fontWeight: 'bold',
-        justifyContent: 'flex-start'
-    },
-
-    statusText: {
-        fontSize: Fonts.size.small,
-        color: useTheme().colors.textColor,
-        padding: Metrics.smallMargin,
-        justifyContent: 'flex-start'
-    },
-
-    divider: {
-        backgroundColor: useTheme().colors.background,
-        margin: Metrics.smallMargin,
-        height: Metrics.horizontalLineHeight,
-
-    },
-});
+    const style = StyleSheet.create({
+        ...ApplicationStyles().style.screen,
+        ...StateDistrictCellStyle().style,
+        ...HeaderViewStyle().style,
+        statContainer: {
+            backgroundColor: colors.statBackground,
+            marginLeft: Metrics.doubleBaseMargin,
+            marginRight: Metrics.doubleBaseMargin,
+            borderRadius: 10,
+            borderWidth: 4,
+            paddingBottom: Metrics.baseMargin,
+            borderColor: colors.background
+        },
+    
+        locationText: {
+            fontSize: Fonts.size.medium,
+            color: colors.textColor,
+            padding: Metrics.baseMargin,
+            fontWeight: 'bold',
+            justifyContent: 'flex-start'
+        },
+    
+        zoneLocationText: {
+            fontSize: Fonts.size.small,
+            color: colors.white,
+            padding: Metrics.baseMargin,
+            fontWeight: 'bold',
+            justifyContent: 'flex-start'
+        },
+    
+        statusText: {
+            fontSize: Fonts.size.small,
+            color: colors.textColor,
+            padding: Metrics.smallMargin,
+            justifyContent: 'flex-start'
+        },
+    
+        divider: {
+            backgroundColor: colors.background,
+            margin: Metrics.smallMargin,
+            height: Metrics.tinyMargin,
+    
+        },
+        containmentZoneView: {
+            width: '100%',
+            backgroundColor: colors.red,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: 0, 
+        }
+    });
+    return {style};
+}
