@@ -45,7 +45,15 @@ const colors = {
     avatarBorder: '#DCE3E8',
     lightText: '#656565',
     text: '#000000',
-    transparentBump: (Platform.OS === 'ios') ? 'rgba(140,42,140, 0.5)' : 'rgba(140,42,140, 0.9)'
+    transparentBump: (Platform.OS === 'ios') ? 'rgba(140,42,140, 0.5)' : 'rgba(140,42,140, 0.9)',
+
+    redZoneBackground:'rgba(255,7,58,.12549)',
+    redZoneText:'#ff073a',
+    orangZoneBackground:'rgba(255,193,7,.12549)',
+    orangeZoneText:'#fd7e14',
+    greenZoneBackground:'rgba(40,167,69,.12549)',
+    greenZoneText:'#28a745',
+
   }
 
 

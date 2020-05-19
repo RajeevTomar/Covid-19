@@ -67,8 +67,8 @@ const Dashboard = (props) => {
                 const latitude = location.latitude;
                 const longitude = location.longitude;
                 // fetch all live stats and test data
-                dispatch(fetchZones(latitude, longitude));
-                //dispatch(fetchZones(23.302189, 81.356804));
+                //dispatch(fetchZones(latitude, longitude));
+                dispatch(fetchZones(23.302189, 81.356804));
                 //dispatch(fetchZones(26.937834, 81.188324));
                 //dispatch(fetchZones(27.213606, 78.031471));
             }

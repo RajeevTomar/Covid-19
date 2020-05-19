@@ -10,19 +10,21 @@ export default StateDistrictCellStyle = () => {
         columnView: {
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+           padding:Metrics.baseMargin,
+
         },
         countText: {
             fontSize: Fonts.size.medium,
             color: colors.textColor,
             padding: Metrics.smallMargin,
             justifyContent: 'center',
-            fontWeight: 'bold',
             alignItems: 'center'
         },
         deltaText: {
             fontSize: Fonts.size.small,
             color: colors.red,
+            fontWeight: 'bold',
             padding: Metrics.tinyMargin,
             justifyContent: 'center',
             alignItems: 'center'

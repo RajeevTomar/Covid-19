@@ -11,8 +11,9 @@ export default HeaderViewStyle = () => {
         rowContainer:{
             backgroundColor:colors.statBackground,
             flexDirection:'row',
-            justifyContent:'space-around',
-            alignItems:'center'    
+            justifyContent:'space-between',
+            alignItems:'center',
+            justifyContent:'center', 
         }, headerText:{
             fontSize: Fonts.size.small,
             padding:Metrics.smallMargin,
@@ -21,8 +22,6 @@ export default HeaderViewStyle = () => {
             flex: 1,
             alignItems:'center'
         },
-    
-        
     });
     return {style};
 }

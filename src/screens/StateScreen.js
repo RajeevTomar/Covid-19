@@ -5,43 +5,76 @@ import HeaderView from '../components/HeaderView';
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
+import { sortBaseOnConfirmCases } from '../utils/CommonFunction';
 
 
 
 
 export default StateScreen = (props) => {
 
-  const {style} = StateScreenStyle();
+  const { style } = StateScreenStyle();
 
   const { colors } = useTheme();
 
-  const { state,allZone } = props.route.params;
+  const { state, allZone } = props.route.params;
 
   // sort the state array
-  let districtData = state.districtData;
-  districtData = districtData.sort((firstItem, secondItem) =>{
-    if (firstItem.confirmed < secondItem.confirmed) {
-      return 1;
+  let districtData = sortBaseOnConfirmCases(state.districtData);
+
+  // filter all district zone based on statecode
+  let districtZones = allZone.filter(item => {
+    return item.statecode === state.statecode;
+  });
+
+  // map with state data
+  let districtWithZone = districtData.map(district => {
+    let districtZone = districtZones.filter(item => {
+      return item.district === district.district;
+    });
+    // add color code based on zone 
+    let iDistrictZone = districtZone[0];
+    if (iDistrictZone != null && iDistrictZone != 'undefined') {
+      let colorsObj = {
+        backgroundColor: '',
+        textColor: ''
+      };
+      switch (iDistrictZone.zone) {
+        case 'Green':
+          colorsObj.backgroundColor = colors.greenZoneBackground;
+          colorsObj.textColor = colors.greenZoneText;
+          break;
+        case 'Red':
+          colorsObj.backgroundColor = colors.redZoneBackground;
+          colorsObj.textColor = colors.redZoneText;
+          break;
+        case 'Orange':
+          colorsObj.backgroundColor = colors.orangZoneBackground;
+          colorsObj.textColor = colors.orangeZoneText;
+          break;
+        default:
+          colorsObj.backgroundColor = colors.actionbarColor;
+          colorsObj.textColor = colors.avatarBorder;
+      }
+      district.colors = colorsObj;
     }
-    if (firstItem.confirmed > secondItem.confirmed) {
-      return -1;
-    }
-    // cases must be equal
-    return 0;
+    return district;
   });
 
 
   const RenderDistricts = (district, index) => {
+    let zoneTextColor = district.colors ? district.colors.textColor : colors.textColor;
+    let zoneBackgroundColor = district.colors ? district.colors.backgroundColor : colors.transparent;
     return (
       <View>
         <View style={{
-          ...style.rowContainer, justifyContent: 'space-around',
-          paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
+          ...style.rowContainer, justifyContent: 'space-around'
         }}>
-          <Text style={{
-            ...style.countText, flex: 1, color: colors.textColor,
-            marginLeft: Metrics.baseMargin, fontWeight: 'normal'
-          }}>{district.district}</Text>
+            <View style={{backgroundColor: zoneBackgroundColor, flex:1.2,}}>        
+            <Text style={{
+              ...style.countText, color: zoneTextColor,flex:1,marginTop:Metrics.smallMargin,
+               fontWeight: 'normal'
+            }}>{district.district}</Text>
+            </View>  
           <StateDistrictCellView total={district.confirmed} delta={district.delta.confirmed} textColor={colors.red} />
           <StateDistrictCellView total={district.recovered} delta={district.delta.recovered} textColor={colors.green} />
           <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={colors.lightColor} />
@@ -54,8 +87,8 @@ export default StateScreen = (props) => {
   return (
     <View style={style.mainContainer}>
       {state && <HeaderView header={[state.state, 'Confirmed', 'Recovered', 'Deceased']} />}
-      {state.districtData && <FlatList style={{marginTop:Metrics.tinyMargin}}
-        data={districtData}
+      {districtWithZone && <FlatList style={{ marginTop: Metrics.tinyMargin }}
+        data={districtWithZone}
         renderItem={({ item, index }) => RenderDistricts(item, index)}
         keyExtractor={(item, index) => index.toString()}
       />}
