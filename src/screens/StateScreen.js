@@ -18,48 +18,55 @@ export default StateScreen = (props) => {
 
   const { state, allZone } = props.route.params;
 
+
+  //const districts = Object.create(state.districtData);
+
   // sort the state array
   let districtData = sortBaseOnConfirmCases(state.districtData);
 
   // filter all district zone based on statecode
-  let districtZones = allZone.filter(item => {
-    return item.statecode === state.statecode;
-  });
-
-  // map with state data
-  let districtWithZone = districtData.map(district => {
-    let districtZone = districtZones.filter(item => {
-      return item.district === district.district;
+  if (allZone != null && allZone != 'undefined' && allZone.length > 0) {
+    let districtZones = allZone.filter(item => {
+      return item.statecode === state.statecode;
     });
-    // add color code based on zone 
-    let iDistrictZone = districtZone[0];
-    if (iDistrictZone != null && iDistrictZone != 'undefined') {
-      let colorsObj = {
-        backgroundColor: '',
-        textColor: ''
-      };
-      switch (iDistrictZone.zone) {
-        case 'Green':
-          colorsObj.backgroundColor = colors.greenZoneBackground;
-          colorsObj.textColor = colors.greenZoneText;
-          break;
-        case 'Red':
-          colorsObj.backgroundColor = colors.redZoneBackground;
-          colorsObj.textColor = colors.redZoneText;
-          break;
-        case 'Orange':
-          colorsObj.backgroundColor = colors.orangZoneBackground;
-          colorsObj.textColor = colors.orangeZoneText;
-          break;
-        default:
-          colorsObj.backgroundColor = colors.actionbarColor;
-          colorsObj.textColor = colors.avatarBorder;
-      }
-      district.colors = colorsObj;
+    // map with state data
+    if (districtZones != null && districtZones != 'undefined' && districtZones.length > 0) {
+      districtData.map(district => {
+        let districtZone = districtZones.filter(item => {
+          return item.district === district.district;
+        });
+        // add color code based on zone 
+        let iDistrictZone = districtZone[0];
+        if (iDistrictZone != null && iDistrictZone != 'undefined') {
+          let colorsObj = {
+            backgroundColor: '',
+            textColor: ''
+          };
+          switch (iDistrictZone.zone) {
+            case 'Green':
+              colorsObj.backgroundColor = colors.greenZoneBackground;
+              colorsObj.textColor = colors.greenZoneText;
+              break;
+            case 'Red':
+              colorsObj.backgroundColor = colors.redZoneBackground;
+              colorsObj.textColor = colors.redZoneText;
+              break;
+            case 'Orange':
+              colorsObj.backgroundColor = colors.orangZoneBackground;
+              colorsObj.textColor = colors.orangeZoneText;
+              break;
+            default:
+              colorsObj.backgroundColor = colors.actionbarColor;
+              colorsObj.textColor = colors.avatarBorder;
+          }
+          district.colors = colorsObj;
+        }
+        return district;
+      });
     }
-    return district;
-  });
+  }
 
+  let stateData = districtData ? districtData : state.districtData;
 
   const RenderDistricts = (district, index) => {
     let zoneTextColor = district.colors ? district.colors.textColor : colors.textColor;
@@ -69,12 +76,12 @@ export default StateScreen = (props) => {
         <View style={{
           ...style.rowContainer, justifyContent: 'space-around'
         }}>
-            <View style={{backgroundColor: zoneBackgroundColor, flex:1.2,}}>        
+          <View style={{ backgroundColor: zoneBackgroundColor, flex: 1.5, }}>
             <Text style={{
-              ...style.countText, color: zoneTextColor,flex:1,marginTop:Metrics.smallMargin,
-               fontWeight: 'normal'
+              ...style.countText, color: zoneTextColor, flex: 1.5, marginTop: Metrics.smallMargin,
+              fontWeight: 'normal'
             }}>{district.district}</Text>
-            </View>  
+          </View>
           <StateDistrictCellView total={district.confirmed} delta={district.delta.confirmed} textColor={colors.red} />
           <StateDistrictCellView total={district.recovered} delta={district.delta.recovered} textColor={colors.green} />
           <StateDistrictCellView total={district.deceased} delta={district.delta.deceased} textColor={colors.lightColor} />
@@ -87,8 +94,8 @@ export default StateScreen = (props) => {
   return (
     <View style={style.mainContainer}>
       {state && <HeaderView header={[state.state, 'Confirmed', 'Recovered', 'Deceased']} />}
-      {districtWithZone && <FlatList style={{ marginTop: Metrics.tinyMargin }}
-        data={districtWithZone}
+      {stateData && <FlatList style={{ marginTop: Metrics.tinyMargin }}
+        data={stateData}
         renderItem={({ item, index }) => RenderDistricts(item, index)}
         keyExtractor={(item, index) => index.toString()}
       />}

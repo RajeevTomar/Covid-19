@@ -13,7 +13,8 @@ export default HeaderViewStyle = () => {
             flexDirection:'row',
             justifyContent:'space-between',
             alignItems:'center',
-            justifyContent:'center', 
+            justifyContent:'center',
+             
         }, headerText:{
             fontSize: Fonts.size.small,
             padding:Metrics.smallMargin,

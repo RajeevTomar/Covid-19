@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, FlatList, TouchableHighlight, AppState } from 'react-native';
+import { Text, View, Image, FlatList, TouchableHighlight, AppState,ScrollView,
+    RefreshControl, } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchLiveStateWiseAndTestData, fetchZones } from '../redux/actions/RemoteAPIAction';
 import DashboardStyle from '../styles/DashboardStyle';
@@ -13,12 +14,13 @@ import { CONTAINMENT_ZONE_MESSAGE } from '../String';
 
 const Dashboard = (props) => {
 
-    const {style} = DashboardStyle();
+    const { style } = DashboardStyle();
     const { colors } = useTheme();
 
     // state
     const [containmentZone, setContainmentZone] = useState(false);
-    //const [appState, setAppState] = useState('');
+    //const [appState, setAppState] = useState(AppState.currentState);
+    const [refreshing, setRefreshing] = React.useState(false);
 
 
     // navigation
@@ -39,19 +41,33 @@ const Dashboard = (props) => {
 
     useEffect(() => {
         fetchDataFromRemoteAPI();
-        AppState.addEventListener("change", _handleAppStateChange);
-        return () => {
-            AppState.removeEventListener("change", _handleAppStateChange);
-        };
+
+        // AppState.addEventListener("change", _handleAppStateChange);
+        // return () => {
+        //     AppState.removeEventListener("change", _handleAppStateChange);
+        // };
 
     }, []);
 
-    const _handleAppStateChange = nextAppState => {
-        if (nextAppState === "active") {
-            fetchDataFromRemoteAPI();
-        }
-        //setAppState(nextAppState);
-    };
+    // const _handleAppStateChange = nextAppState => {
+    //     if (appState.match(/inactive|background/) && nextAppState === "active") {
+    //         console.log("App has come to the foreground!");
+    //     }
+    //     setAppState(nextAppState);
+    //     fetchDataFromRemoteAPI();
+    // };
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        fetchDataFromRemoteAPI();
+        wait(500).then(() => setRefreshing(false));
+    }, [refreshing]);
+
+    function wait(timeout) {
+        return new Promise(resolve => {
+          setTimeout(resolve, timeout);
+        });
+      }
 
     const fetchDataFromRemoteAPI = () => {
         // make api call here
@@ -67,8 +83,8 @@ const Dashboard = (props) => {
                 const latitude = location.latitude;
                 const longitude = location.longitude;
                 // fetch all live stats and test data
-                //dispatch(fetchZones(latitude, longitude));
-                dispatch(fetchZones(23.302189, 81.356804));
+                dispatch(fetchZones(latitude, longitude));
+                //dispatch(fetchZones(23.302189, 81.356804));
                 //dispatch(fetchZones(26.937834, 81.188324));
                 //dispatch(fetchZones(27.213606, 78.031471));
             }
@@ -136,7 +152,7 @@ const Dashboard = (props) => {
                 if (locatedstate != null && locatedstate != 'undefined') {
                     let locatedDistrict = locatedstate[0].districtData.filter(item => {
                         let district = item.district.replace(/ +/g, "").toLowerCase();;
-                        return district  === liveZoneDistrict;
+                        return district === liveZoneDistrict;
                     })
                     if (locatedDistrict != null && locatedDistrict.length > 0) {
                         const locationDistrictObj = locatedDistrict[0];
@@ -195,7 +211,7 @@ const Dashboard = (props) => {
                         paddingTop: Metrics.smallMargin, paddingBottom: Metrics.smallMargin,
                     }}>
                         <Text style={{
-                            ...style.countText, flex: 1, color: colors.textColor,
+                            ...style.countText, flex: 1.5, color: colors.textColor,
                             marginLeft: Metrics.baseMargin, fontWeight: 'normal'
                         }}>{state.state}</Text>
                         <StateDistrictCellView total={state.confirmed} delta={state.deltaconfirmed} textColor={colors.red} />
@@ -234,23 +250,28 @@ const Dashboard = (props) => {
 
     return (
         <View style={style.mainContainer}>
-            {/* Current location stat */}
-            {liveData && <View style={style.statContainer}>
-                {liveZone && allZone && <DistrictZoneView title={liveZone.district} />}
-                <ColumnView totalStat={liveData[0]} title='Across India' />
-            </View>}
-            {/* Header View */}
-            <HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />
-            {/* State List  */}
-            {stateList && <FlatList style={{ marginTop: Metrics.tinyMargin, marginBottom: Metrics.baseMargin }}
-                data={stateList}
-                renderItem={({ item, index }) => RenderStates(item, index)}
-                keyExtractor={(item, index) => index.toString()}
-            />}
-            {/* containmentZone View    */}
-            {containmentZone && <View style={style.containmentZoneView}>
-                <Text style={style.zoneLocationText}>{CONTAINMENT_ZONE_MESSAGE}</Text>
-            </View>}
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }>
+                {/* Current location stat */}
+                {liveData && <View style={style.statContainer}>
+                    {liveZone && allZone && <DistrictZoneView title={liveZone.district} />}
+                    <ColumnView totalStat={liveData[0]} title='Across India' />
+                </View>}
+                {/* Header View */}
+                <HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />
+                {/* State List  */}
+                {stateList && <FlatList style={{ marginTop: Metrics.tinyMargin, marginBottom: Metrics.baseMargin }}
+                    data={stateList}
+                    renderItem={({ item, index }) => RenderStates(item, index)}
+                    keyExtractor={(item, index) => index.toString()}
+                />}
+                {/* containmentZone View    */}
+                {containmentZone && <View style={style.containmentZoneView}>
+                    <Text style={style.zoneLocationText}>{CONTAINMENT_ZONE_MESSAGE}</Text>
+                </View>}
+            </ScrollView>
             <ActivityIndicator isLoading={isLoading} />
         </View>
     );
