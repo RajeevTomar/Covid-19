@@ -76,7 +76,8 @@ export default StateScreen = (props) => {
         <View style={{
           ...style.rowContainer, justifyContent: 'space-around'
         }}>
-          <View style={{ backgroundColor: zoneBackgroundColor, flex: 1.5, }}>
+          <View style={{ backgroundColor: zoneBackgroundColor, flex: 1.5, justifyContent: 'center',
+            alignItems: 'center' }}>
             <Text style={{
               ...style.countText, color: zoneTextColor, flex: 1.5, marginTop: Metrics.smallMargin,
               fontWeight: 'normal'

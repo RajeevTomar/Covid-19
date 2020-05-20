@@ -1,3 +1,5 @@
+import {Platform} from 'react-native';
+
 
 const type = {
     regular: 'Robotoslab-Bold',
@@ -5,12 +7,12 @@ const type = {
 }
 
 const size = {
-    verySmall:8,
-    small: 12,
-    medium: 14,
-    large: 20,
-    extraLarge:24,
-    doubleExtraLarge:30
+    verySmall:Platform.OS=='ios'?10:12,
+    small: Platform.OS=='ios'?14:16,
+    medium: Platform.OS=='ios'?16:18,
+    large: Platform.OS=='ios'?20:22,
+    extraLarge:Platform.OS=='ios'?24:26,
+    doubleExtraLarge:Platform.OS=='ios'?30:32
 
 }
 

@@ -11,13 +11,13 @@ export default StateDistrictCellStyle = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-           padding:Metrics.baseMargin,
+            padding:Metrics.smallMargin,
 
         },
         countText: {
             fontSize: Fonts.size.medium,
             color: colors.textColor,
-            padding: Metrics.smallMargin,
+            padding: Metrics.tinyMargin,
             justifyContent: 'center',
             alignItems: 'center'
         },
