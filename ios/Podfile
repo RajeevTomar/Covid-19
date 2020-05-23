@@ -82,6 +82,8 @@ target 'Covid19' do
   pod 'react-native-appearance', :path => '../node_modules/react-native-appearance'
 
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'Covid19Tests' do
     inherit! :complete
     # Pods for testing

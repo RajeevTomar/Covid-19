@@ -1,19 +1,17 @@
 import { Fonts, Metrics, ApplicationStyles} from '../themes';
 import useTheme from '../themes/ThemeHooks';
 import { StyleSheet } from 'react-native';
-import StateDistrictCellStyle from './StateDistrictCellStyle';
+
 
 
 export default HeaderViewStyle = () => {
     const {colors} = useTheme();
     const style = StyleSheet.create({
-        ...StateDistrictCellStyle().style,
         rowContainer:{
             backgroundColor:colors.statBackground,
             flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center',
-            justifyContent:'center',
+            justifyContent:'space-around',
+            
              
         }, headerText:{
             fontSize: Fonts.size.small,
@@ -23,6 +21,12 @@ export default HeaderViewStyle = () => {
             flex: 1,
             alignItems:'center'
         },
+        divider: {
+            backgroundColor: colors.background,
+            margin: Metrics.smallMargin,
+            height: Metrics.tinyMargin,
+    
+        }
     });
     return {style};
 }

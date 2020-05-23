@@ -8,7 +8,7 @@ const type = {
 
 const size = {
     verySmall:Platform.OS=='ios'?10:12,
-    small: Platform.OS=='ios'?14:16,
+    small: Platform.OS=='ios'?13:15,
     medium: Platform.OS=='ios'?16:18,
     large: Platform.OS=='ios'?20:22,
     extraLarge:Platform.OS=='ios'?24:26,

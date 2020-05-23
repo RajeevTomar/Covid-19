@@ -4,6 +4,7 @@ import React from 'react';
 import Dashboard from '../screens/Dashboard';
 import useTheme from '../themes/ThemeHooks';
 import StateScreen from '../screens/StateScreen';
+import StatScreen from '../screens/StatScreen';
 
 
 
@@ -28,8 +29,12 @@ function Navigation() {
           component={Dashboard}
           options={{ title: 'DASHBOARD', headerTitleAlign:'center'}}
         />
-         <Stack.Screen name="StateScreen"
+         <Stack.Screen name="State"
           component={StateScreen}
+          options={{ title: '', headerTitleAlign:'center'}}
+        />
+         <Stack.Screen name="Stat"
+          component={StatScreen}
           options={{ title: '', headerTitleAlign:'center'}}
         />
       </Stack.Navigator>

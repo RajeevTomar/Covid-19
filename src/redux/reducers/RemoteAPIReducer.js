@@ -8,7 +8,7 @@ import {
 const LIVE_STATE_INITIAL_STATE = {
     error: null,
     isLoading: false,
-    liveData: null,
+    allData: null,
     stateWise: null,
     testData: null
 }

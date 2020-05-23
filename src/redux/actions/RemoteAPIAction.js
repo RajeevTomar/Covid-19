@@ -22,7 +22,7 @@ export const fetchLiveStateWiseAndTestData = (dispatch) => {
         // save responses in store and dispatch
         dispatchActions(dispatch, FETCH_STATE_DISTRICT_TEST_DATA,
             {
-                liveData: responses[0].data.statewise,
+                allData: responses[0].data,
                 stateWise: responses[1].data,
                 testData: responses[2].data
             });

@@ -54,6 +54,8 @@ const colors = {
     greenZoneBackground:'rgba(40,167,69,.12549)',
     greenZoneText:'#28a745',
 
+    
+
   }
 
 
