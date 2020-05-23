@@ -95,10 +95,10 @@ const Dashboard = (props) => {
                 const latitude = location.latitude;
                 const longitude = location.longitude;
                 // fetch all live stats and test data
-                //dispatch(fetchZones(latitude, longitude));
+                dispatch(fetchZones(latitude, longitude));
                 //dispatch(fetchZones(23.302189, 81.356804));
                 //dispatch(fetchZones(28.535517, 77.391029));
-                dispatch(fetchZones(27.213606, 78.031471));
+                //dispatch(fetchZones(27.213606, 78.031471));
             }
         }).catch(error => {
             const { code, message } = error;
