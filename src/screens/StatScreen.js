@@ -22,31 +22,37 @@ const StatScreen = (props) => {
 
 
     const data = {
-        labels: [],
+        labels: refinedData.dates.slice(-30),
         datasets: [{
-            data: refinedData.dailyConfirmed
+            data: refinedData.dailyConfirmed.slice(-30)
         }]
     };
 
     const chartConfig = {
-        backgroundGradientFrom: "#1E2923",
-        backgroundGradientFromOpacity: 0,
-        backgroundGradientTo: "#08130D",
-        backgroundGradientToOpacity: 0.5,
-        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-        strokeWidth: 2, // optional, default 3
-        barPercentage: 0.5,
-        useShadowColorFromDataset: false // optional
-      };
+        backgroundColor: colors.background,
+        backgroundGradientFrom: colors.white,
+        backgroundGradientTo: colors.white,
+        color: (opacity = 1) => colors.red,
+        barPercentage: .2,
+        decimalPlaces: 0,
+        style: {
+            borderRadius: 1,
+            marginVertical: 8,
+            borderRadius: 16
+        }
+    };
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <View style={{ backgroundColor: colors.background, padding: 0, margin: Metrics.tinyMargin }}>
             <BarChart
                 data={data}
                 width={Metrics.screenWidth}
-                height={220}
+                height={320}
+                withInnerLines={false}
+                withOuterLines={true}
                 chartConfig={chartConfig}
-                verticalLabelRotation={30}
+                verticalLabelRotation={90}
+
             />
         </View>
     );

@@ -16,7 +16,7 @@ import { CONTAINMENT_ZONE_MESSAGE } from '../String';
 import { preprocessTimeseries, refineDataForChart } from '../utils/CommonFunction';
 import ColumnView from '../components/ColumnView';
 import LocatedDistrictZoneView from '../components/LocatedDistrictZoneView';
-// import 'intl';
+
 
 
 const Dashboard = (props) => {
@@ -26,7 +26,7 @@ const Dashboard = (props) => {
 
     // state
     //const [appState, setAppState] = useState(AppState.currentState);
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
 
     // navigation

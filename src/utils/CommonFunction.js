@@ -5,12 +5,9 @@ import {
 
 import {
   parse,
-  differenceInDays,
   isBefore,
-  isSameDay,
   startOfDay,
-  format,
-  formatDistance,
+  format
 } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
@@ -38,11 +35,6 @@ export const formatDate = (unformattedDate) => {
 export function sliceTimeseriesFromEnd(timeseries, days) {
   return timeseries.slice(-days);
 }
-
-// export const formatNumber = (value) => {
-//   const numberFormatter = new Intl.NumberFormat('en-IN');
-//   return isNaN(value) ? '-' : numberFormatter.format(value);
-// };
 
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
@@ -111,7 +103,7 @@ const validateCTS = (data = []) => {
   ];
   return data
     .filter((d) => dataTypes.every((dt) => d[dt]) && d.date)
-    .filter((d) => dataTypes.every((dt) => Number(d[dt]) >= 0))
+    .filter((d) => dataTypes.every((dt) => (d[dt]) >= 0))
     .filter((d) => {
       // Skip data from the current day
       const today = getIndiaDay();
@@ -123,7 +115,7 @@ const validateCTS = (data = []) => {
 
 
 export const preprocessTimeseries = (timeseries) => {
-  return validateCTS(timeseries).map((stat, index) => ({
+  return timeseries.map((stat, index) => ({
     date: parse(stat.date, 'dd MMMM', new Date(2020, 0, 1)),
     totalconfirmed: +stat.totalconfirmed,
     totalrecovered: +stat.totalrecovered,
@@ -147,21 +139,21 @@ export const refineDataForChart = (data) => {
     confirmed: [],
     recovered: [],
     deceased: [],
-    dailyConfirmed:[],
-    dailyRecovered:[],
-    dailyDeceased:[]
+    dailyConfirmed: [],
+    dailyRecovered: [],
+    dailyDeceased: []
   }
   data.forEach((data, index) => {
-    if (index >= 31) {
-      const date = parse(data.date, 'dd MMMM', new Date(2020, 0, 1));
-      result.dates.push(date);
-      result.confirmed.push(data.totalconfirmed);
-      result.recovered.push(data.totalrecovered);
-      result.deceased.push(data.totaldeceased);
-      result.dailyConfirmed.push(data.dailyconfirmed);
-      result.dailyRecovered.push(data.dailyrecovered);
-      result.dailyDeceased.push(data.dailydeceased);
-    }
+    // if (index >= 31) {
+    const date = format(data.date, 'dd MMM');
+    result.dates.push(date);
+    result.confirmed.push(data.totalconfirmed);
+    result.recovered.push(data.totalrecovered);
+    result.deceased.push(data.totaldeceased);
+    result.dailyConfirmed.push(data.dailyconfirmed);
+    result.dailyRecovered.push(data.dailyrecovered);
+    result.dailyDeceased.push(data.dailydeceased);
+    // }
   });
 
   return result;
