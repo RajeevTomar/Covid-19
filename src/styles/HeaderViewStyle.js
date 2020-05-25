@@ -19,6 +19,7 @@ export default HeaderViewStyle = () => {
             justifyContent:'center',
             fontWeight:'bold',
             flex: 1,
+            color:colors.textColor,
             alignItems:'center'
         },
         divider: {

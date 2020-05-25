@@ -65,8 +65,8 @@ const Dashboard = (props) => {
     // };
 
     // Country Line Chart Data
-    const dailyCasesReport = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
-    const refinedData = refineDataForChart(dailyCasesReport);
+    const timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
+    const timeSeriesForChart = refineDataForChart(timeSeries);
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -130,15 +130,15 @@ const Dashboard = (props) => {
         );
     }
 
-    const onTapState = (state, index) => {
+    const onTapState = (tappedState, index) => {
         // filter out district based on selected state
-        if (state != null && state != 'undefined') {
+        if (tappedState != null && tappedState != 'undefined') {
             new Promise((resolve, reject) => {
-                if (state == null || state == 'undefined' || stateWise == null)
+                if (tappedState == null || tappedState == 'undefined' || stateWise == null)
                     reject('Something went wrong.');
 
                 // get state code
-                let stateCode = state.statecode;
+                let stateCode = tappedState.statecode;
                 let districtData = stateWise.filter(item => {
                     return item.statecode == stateCode;
                 });
@@ -146,7 +146,7 @@ const Dashboard = (props) => {
             }).then(state => {
                 // move to the District Screen 
                 if (navigation != null && navigation != 'undefined' && state != null && state.length > 0)
-                    navigation.navigate('State', { state: state[0], allZone: allZone });
+                    navigation.navigate('District', { state: state[0], allZone: allZone, stateLiveData: tappedState});
             }).catch(error => {
                 alert(error);
             });
@@ -157,7 +157,8 @@ const Dashboard = (props) => {
         // move to Stat screen 
         // move to the District Screen 
         if (navigation != null && navigation != 'undefined')
-            navigation.navigate('Stat', { refinedData:refinedData });
+            navigation.navigate('Stat', { refinedData: timeSeriesForChart,totalCounts:liveData[0] });
+
     }
 
 
@@ -173,7 +174,7 @@ const Dashboard = (props) => {
                         allZone={allZone} stateWise={stateWise} />}
                     {/* Country Data */}
                     <TouchableHighlight onPress={() => onTapCountryInsight()}>
-                        <ColumnView totalStat={liveData[0]} title='Across India' refinedData={refinedData} />
+                        <ColumnView totalStat={liveData[0]} title='Across India' refinedData={timeSeriesForChart} />
                     </TouchableHighlight>
                 </View>}
                 {/* Header View */}

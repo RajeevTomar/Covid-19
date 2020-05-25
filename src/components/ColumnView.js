@@ -11,6 +11,16 @@ import useTheme from '../themes/ThemeHooks';
 export default ColumnView = ({ totalStat, title, refinedData }) => {
     const {style} = ColumnViewStyle();
     const {colors} = useTheme();
+    // check if refined data is undefined
+    if( refinedData == null || refinedData == 'undefined')
+     {
+         refinedData = {
+            dailyConfirmed:[],
+            refinedData:[],
+            refinedData:[]
+         };
+         
+     }
     return (
         <View>
             <Text style={style.locationText}>{title}</Text>

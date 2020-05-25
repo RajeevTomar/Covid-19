@@ -159,3 +159,36 @@ export const refineDataForChart = (data) => {
   return result;
 
 }
+
+export const createIntervalData = (dataArr, interval) => {
+  if (dataArr === null || dataArr === 'undefined')
+    return dataArr;
+  const length = dataArr.length;
+  if (length > interval) {
+    let resultArr = [];
+    dataArr.forEach((data, index) => {
+      if (index % interval == 0) {
+        resultArr.push(data);
+      }
+    });
+    resultArr.push(dataArr.slice(-1));
+    return resultArr;
+  }
+  return dataArr;
+}
+
+export const createStatckedData = (confirmedCases, recoveredCases) => {
+  if (confirmedCases === null || recoveredCases === null)
+    return null;
+  let resultArr = [];
+   confirmedCases.forEach((data,index)=>{
+      let stackedArr = [];
+      // recovered
+      stackedArr.push(recoveredCases[index]);
+      // confirmed
+      stackedArr.push(data);
+      // final Arr
+      resultArr.push(stackedArr);
+   });
+   return resultArr;
+}

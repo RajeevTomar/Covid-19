@@ -11,7 +11,7 @@ export default LocatedZoneStyle = () => {
         ...HeaderViewStyle().style,
         zoneLocationText: {
             fontSize: Fonts.size.small,
-            color: colors.white,
+            color: colors.textColor,
             padding: Metrics.baseMargin,
             fontWeight: 'bold',
             justifyContent: 'flex-start'

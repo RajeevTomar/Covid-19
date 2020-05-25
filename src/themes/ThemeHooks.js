@@ -1,14 +1,15 @@
 import { useColorScheme } from 'react-native-appearance'
-import ThemedColors  from './ThemedColor'
+import ThemedColors from './ThemedColor'
 
 const UseTheme = () => {
-    const theme = useColorScheme()
-    //const colors =  theme ? ThemedColors[theme] : ThemedColors.default;
-    const colors =  ThemedColors.default;
-    return {
-      colors,
-      //theme,
-    }
+  let theme = useColorScheme();
+  if (theme === 'no-preference')
+    theme = 'light';
+  const colors = theme ? ThemedColors[theme] : ThemedColors.default;
+  return {
+    colors,
+    //theme,
   }
+}
 
-  export default UseTheme;
+export default UseTheme;

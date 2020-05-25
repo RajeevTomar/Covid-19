@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import Dashboard from '../screens/Dashboard';
 import useTheme from '../themes/ThemeHooks';
-import StateScreen from '../screens/StateScreen';
+import DistrictScreen from '../screens/DistrictScreen';
 import StatScreen from '../screens/StatScreen';
 
 
@@ -29,8 +29,8 @@ function Navigation() {
           component={Dashboard}
           options={{ title: 'DASHBOARD', headerTitleAlign:'center'}}
         />
-         <Stack.Screen name="State"
-          component={StateScreen}
+         <Stack.Screen name="District"
+          component={DistrictScreen}
           options={{ title: '', headerTitleAlign:'center'}}
         />
          <Stack.Screen name="Stat"

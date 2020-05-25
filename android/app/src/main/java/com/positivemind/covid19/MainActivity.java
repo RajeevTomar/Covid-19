@@ -1,4 +1,4 @@
-package com.covid19;
+package com.positivemind.covid19;
 
 import com.facebook.react.ReactActivity;
 

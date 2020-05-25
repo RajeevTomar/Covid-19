@@ -16,7 +16,7 @@ import Colors from './Colors';
         error: 'rgba(200, 0, 0, 0.8)',
         border: '#483F53',
         header: 'white',
-        textColor: 'white',
+        textColor: '#f2f2f2',
         lightColor:'#fd7e14'
     },
 }
