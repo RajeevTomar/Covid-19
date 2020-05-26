@@ -55,8 +55,8 @@ export default LocatedDistrictZoneView = ({ title,liveZone,allZone,stateWise }) 
                 flexDirection: 'row', justifyContent: 'space-between',
                 backgroundColor: zoneBackgroundColor
             }}>
-                <Text style={style.zoneLocationText}>{title}</Text>
-                <Text style={style.zoneLocationText}>{zoneType}</Text>
+                <Text style={{...style.zoneLocationText,color:colors.white}}>{title}</Text>
+                <Text style={{...style.zoneLocationText,color:colors.white}}>{zoneType}</Text>
             </View>}
             {totalStat && <View style={style.rowContainer}>
                 <TableView title='Confirmed' total={totalStat.confirmed} delta={totalStat.deltaconfirmed} textColor={colors.red} />

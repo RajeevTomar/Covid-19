@@ -199,11 +199,11 @@ export const parseStateTimeseries = ({states_daily: data}) => {
     return a;
   }, {});
 
-  const today = getIndiaDay();
+  //const today = getIndiaDay();
   for (let i = 0; i < data.length; i += 3) {
     const date = parse(data[i].date, 'dd-MMM-yy', new Date());
     // Skip data from the current day
-    if (isBefore(date, today)) {
+    // if (isBefore(date, today)) {
       Object.entries(statewiseSeries).forEach(([k, v]) => {
         const stateCode = k.toLowerCase();
         const prev = v[v.length - 1] || {};
@@ -230,7 +230,7 @@ export const parseStateTimeseries = ({states_daily: data}) => {
           dailyactive: dailyconfirmed - dailyrecovered - dailydeceased,
         });
       });
-    }
+    // }
   }
   return statewiseSeries;
 };

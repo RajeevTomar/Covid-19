@@ -18,11 +18,11 @@ export default TableView = ({ chartData, title, total, delta, textColor }) => {
             <Text style={style.statusText}>{title}</Text>
             <Text style={{ ...style.countText, color: textColor }}>{total}</Text>
             {delta && <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Image style={{ ...style.arrowImage, tintColor: textColor }} source={require('../images/icon_plus.png')}
-                    tintColor='{textColor}' />
-                <Text style={{ ...style.deltaText, color: textColor }}>{delta}</Text>
+                {/* <Image style={{ ...style.arrowImage, tintColor: textColor }} source={require('../images/icon_plus.png')}
+                    tintColor='{textColor}' /> */}
+                <Text style={{ ...style.deltaText, color: textColor }}>{'+ '+delta}</Text>
             </View>}
-            {chartData && chartData.length>0 && <SmallLineChart data={chartData.slice(-60)} color={textColor} />}
+            {chartData && chartData.length>0 && <SmallLineChart data={chartData.slice(-30)} color={textColor} />}
         </View>
     );
 }

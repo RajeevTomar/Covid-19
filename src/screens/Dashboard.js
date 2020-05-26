@@ -146,7 +146,7 @@ const Dashboard = (props) => {
             }).then(state => {
                 // move to the District Screen 
                 if (navigation != null && navigation != 'undefined' && state != null && state.length > 0)
-                    navigation.navigate('District', { state: state[0], allZone: allZone, stateLiveData: tappedState});
+                    navigation.navigate('District', { state: state[0], allZone: allZone, stateLiveData: tappedState });
             }).catch(error => {
                 alert(error);
             });
@@ -157,7 +157,7 @@ const Dashboard = (props) => {
         // move to Stat screen 
         // move to the District Screen 
         if (navigation != null && navigation != 'undefined')
-            navigation.navigate('Stat', { refinedData: timeSeriesForChart,totalCounts:liveData[0] });
+            navigation.navigate('Stat', { refinedData: timeSeriesForChart, totalCounts: liveData[0] });
 
     }
 
@@ -169,27 +169,33 @@ const Dashboard = (props) => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }>
                 {/* Current location stat */}
-                {liveData && <View style={style.statContainer}>
-                    {liveZone && allZone && <LocatedDistrictZoneView title={liveZone.district} liveZone={liveZone}
-                        allZone={allZone} stateWise={stateWise} />}
-                    {/* Country Data */}
-                    <TouchableHighlight onPress={() => onTapCountryInsight()}>
-                        <ColumnView totalStat={liveData[0]} title='Across India' refinedData={timeSeriesForChart} />
-                    </TouchableHighlight>
-                </View>}
+                {liveData &&
+                    <View style={style.statContainer}>
+                        {liveZone && allZone && <LocatedDistrictZoneView title={liveZone.district} liveZone={liveZone}
+                            allZone={allZone} stateWise={stateWise} />}
+                        {/* Country Data */}
+                        <TouchableHighlight onPress={() => onTapCountryInsight()}>
+                            <ColumnView totalStat={liveData[0]} title='Across India' refinedData={timeSeriesForChart} />
+                        </TouchableHighlight>
+                    </View>
+                }
                 {/* Header View */}
                 <HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />
                 {/* State List  */}
-                {stateList && <FlatList style={{ marginTop: Metrics.tinyMargin, marginBottom: Metrics.baseMargin }}
-                    data={stateList}
-                    renderItem={({ item, index }) => RenderStates(item, index)}
-                    keyExtractor={(item, index) => index.toString()}
-                />}
+                {stateList &&
+                    <FlatList style={{ marginTop: Metrics.tinyMargin, marginBottom: Metrics.baseMargin }}
+                        data={stateList}
+                        renderItem={({ item, index }) => RenderStates(item, index)}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                }
             </ScrollView>
             {/* containmentZone View    */}
-            {liveZone && liveZone.inContainmentZone && <View style={style.containmentZoneView}>
-                <Text style={style.zoneLocationText}>{CONTAINMENT_ZONE_MESSAGE}</Text>
-            </View>}
+            {liveZone && liveZone.inContainmentZone &&
+                <View style={style.containmentZoneView}>
+                    <Text style={style.zoneLocationText}>{CONTAINMENT_ZONE_MESSAGE}</Text>
+                </View>
+            }
             <ActivityIndicator isLoading={isLoading} />
         </View>
     );

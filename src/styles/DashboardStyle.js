@@ -13,11 +13,10 @@ export default DashboardStyle = () =>{
         ...HeaderViewStyle().style,
         statContainer: {
             backgroundColor: colors.statBackground,
-            marginLeft: Metrics.doubleBaseMargin,
-            marginRight: Metrics.doubleBaseMargin,
             borderRadius: 10,
             borderWidth: 4,
-            paddingBottom: Metrics.baseMargin,
+            marginLeft:Metrics.baseMargin,
+            marginRight:Metrics.baseMargin,
             borderColor: colors.background
         },
     
@@ -57,6 +56,13 @@ export default DashboardStyle = () =>{
             alignItems: 'center',
             position: 'absolute',
             bottom: 0, 
+        },
+        moreImage: {
+            width: Metrics.images.medium,
+            height: Metrics.images.medium,
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingRight:Metrics.smallMargin
         }
     });
     return {style};

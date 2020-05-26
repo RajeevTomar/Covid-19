@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Image, FlatList, TouchableHighlight } from 'react-native';
 import DistrictScreenStyle from '../styles/DistrictScreenStyle'
 import HeaderView from '../components/HeaderView';
+import { useSelector, useDispatch } from 'react-redux'
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
-import { fetchDistrictsWithZone,parseStateTimeseries,refineDataForChart } from '../utils/CommonFunction';
+import { fetchDistrictsWithZone, parseStateTimeseries, refineDataForChart } from '../utils/CommonFunction';
 import ColumnView from '../components/ColumnView';
 import axios from 'axios';
+import { fetchStateTimeSeries } from '.././redux/actions/RemoteAPIAction';
+import ActivityIndicator from '../components/ScreenLoader';
+
 
 
 export default DistrictScreen = (props) => {
@@ -17,7 +21,7 @@ export default DistrictScreen = (props) => {
   const { colors } = useTheme();
 
   // State
-  const [stateTimeSeries,setStateTimeSeries] = useState([]);
+  //const [stateTimeSeries, setStateTimeSeries] = useState([]);
 
   // read data from navigation param
   const { state, allZone, stateLiveData } = props.route.params;
@@ -25,26 +29,56 @@ export default DistrictScreen = (props) => {
   // sort the state array
   let districtData = fetchDistrictsWithZone(state, allZone, colors);
 
+  // redux dispatch
+  const dispatch = useDispatch();
+
+  // read data from store
+  const { isLoading, error, stateTimeSeries } =
+    useSelector(state => state.stateTimeSeries);
+
+  let stateTimeSeriesForGraph = null;
+  if(stateTimeSeries != null)
+  {
+    const timeSeries = parseStateTimeseries(stateTimeSeries)[state.statecode.toUpperCase()];
+    stateTimeSeriesForGraph = refineDataForChart(timeSeries);
+  }  
+
   useEffect(() => {
     fetchStateDailyCases();
   }, []);
 
-  const fetchStateDailyCases = async () => {
-    try {
-      const [
-        { data: statesDailyResponse },
-      ] = await Promise.all([
-        axios.get('https://api.covid19india.org/states_daily.json'),
-      ]);
+  const fetchStateDailyCases = () => {
+    fetchStateTimeSeries(dispatch);
 
-      // Timeseries
-      const timeSeries = parseStateTimeseries(statesDailyResponse)[state.statecode.toUpperCase()];
-      const timeSeriesForChart = refineDataForChart(timeSeries);
-      setStateTimeSeries(timeSeriesForChart);
-    } catch (err) {
-      console.log(err);
-    }
+    // axios.get('https://api.covid19india.org/states_daily.json').
+    //   then(res => {
+    //     if (res != null) {
+    //       const timeSeries = parseStateTimeseries(res.data)[state.statecode.toUpperCase()];
+    //       const timeSeriesForChart = refineDataForChart(timeSeries);
+    //       setStateTimeSeries(timeSeriesForChart);
+    //     }
+    //   }).
+    //   catch(error => {
+
+    //   });
   };
+
+
+  //   try {
+  //     const [
+  //       { data: statesDailyResponse },
+  //     ] = await Promise.all([
+  //       axios.get('https://api.covid19india.org/states_daily.json'),
+  //     ]);
+
+  //     // Timeseries
+  //     const timeSeries = parseStateTimeseries(statesDailyResponse)[state.statecode.toUpperCase()];
+  //     const timeSeriesForChart = refineDataForChart(timeSeries);
+  //     setStateTimeSeries(timeSeriesForChart);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const onTapStateInsight = () => {
 
@@ -78,17 +112,21 @@ export default DistrictScreen = (props) => {
 
   return (
     <View style={style.mainContainer}>
-      {stateLiveData && <View style={style.districtContainer}>
-        <TouchableHighlight onPress={() => onTapStateInsight()}>
-          <ColumnView totalStat={stateLiveData} title={state.state} refinedData={stateTimeSeries} />
-        </TouchableHighlight>
-      </View>}
-      {<HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />}
-      {districtData && <FlatList style={{ marginTop: Metrics.tinyMargin }}
-        data={districtData}
-        renderItem={({ item, index }) => RenderDistricts(item, index)}
-        keyExtractor={(item, index) => index.toString()}
-      />}
+      {stateLiveData &&
+        <View style={style.districtContainer}>
+          <TouchableHighlight onPress={() => onTapStateInsight()}>
+            <ColumnView totalStat={stateLiveData} title={state.state} refinedData={stateTimeSeriesForGraph} />
+          </TouchableHighlight>
+        </View>
+      }
+      <HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />
+      {districtData &&
+        <FlatList style={{ marginTop: Metrics.tinyMargin }}
+          data={districtData}
+          renderItem={({ item, index }) => RenderDistricts(item, index)}
+          keyExtractor={(item, index) => index.toString()} />
+      }
+      <ActivityIndicator isLoading={isLoading} />
     </View>
   );
 }

@@ -13,11 +13,10 @@ export default DistrictScreenStyle = () => {
         ...HeaderViewStyle().style,
         districtContainer: {
             backgroundColor: colors.statBackground,
-            marginLeft: Metrics.doubleBaseMargin,
-            marginRight: Metrics.doubleBaseMargin,
+            marginLeft: Metrics.baseMargin,
+            marginRight: Metrics.baseMargin,
             borderRadius: 10,
             borderWidth: 4,
-            paddingBottom: Metrics.baseMargin,
             borderColor: colors.background
         }
     });

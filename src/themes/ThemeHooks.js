@@ -4,7 +4,7 @@ import ThemedColors from './ThemedColor'
 const UseTheme = () => {
   let theme = useColorScheme();
   if (theme === 'no-preference')
-    theme = 'light';
+    theme = 'dark';
   const colors = theme ? ThemedColors[theme] : ThemedColors.default;
   return {
     colors,

@@ -12,14 +12,21 @@ export default ColumnViewStyle = () => {
             color: colors.textColor,
             padding: Metrics.baseMargin,
             fontWeight: 'bold',
-            justifyContent: 'flex-start'
         },
         columnContainer:{
             backgroundColor:colors.statBackground,
             flexDirection:'row',
             justifyContent:'space-around',
+        },
+        moreImage: {
+            width: Metrics.images.medium,
+            height: Metrics.images.medium,
+            justifyContent: 'center',
+            alignItems:'center',
+            resizeMode:'contain',
+            marginTop:Metrics.smallMargin,
+            marginRight:Metrics.doubleBaseMargin    
             
-             
         }
     });
     return { style };

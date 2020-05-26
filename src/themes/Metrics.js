@@ -33,7 +33,7 @@ const metrics = {
   images: {
     tiny:10,
     small: 20,
-    medium: 40,
+    medium: 30,
     large: 60,
     logo: 200,
     avatar: 54
