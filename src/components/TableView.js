@@ -22,7 +22,7 @@ export default TableView = ({ chartData, title, total, delta, textColor }) => {
                     tintColor='{textColor}' />
                 <Text style={{ ...style.deltaText, color: textColor }}>{delta}</Text>
             </View>}
-            {chartData && chartData.length>0 && <SmallLineChart data={chartData.slice(-30)} color={textColor} />}
+            {chartData && chartData.length>0 && <SmallLineChart data={chartData.slice(-60)} color={textColor} />}
         </View>
     );
 }

@@ -5,10 +5,9 @@ import HeaderView from '../components/HeaderView';
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
-import { sortBaseOnConfirmCases } from '../utils/CommonFunction';
+import { fetchDistrictsWithZone,parseStateTimeseries,refineDataForChart } from '../utils/CommonFunction';
 import ColumnView from '../components/ColumnView';
-
-
+import axios from 'axios';
 
 
 export default DistrictScreen = (props) => {
@@ -17,57 +16,38 @@ export default DistrictScreen = (props) => {
   const { style } = DistrictScreenStyle();
   const { colors } = useTheme();
 
+  // State
+  const [stateTimeSeries,setStateTimeSeries] = useState([]);
+
   // read data from navigation param
   const { state, allZone, stateLiveData } = props.route.params;
 
   // sort the state array
-  let districtData = sortBaseOnConfirmCases(state.districtData);
-  districtData = fetchDistrictsWithZone(state,allZone);
-  let stateData = districtData ? districtData : state.districtData;
+  let districtData = fetchDistrictsWithZone(state, allZone, colors);
 
-  function fetchDistrictsWithZone(state, allZone){
-    // filter all district zone based on statecode
-    if (allZone != null && allZone != 'undefined' && allZone.length > 0) {
-      let districtZones = allZone.filter(item => {
-        return item.statecode === state.statecode;
-      });
-      // map with state data
-      if (districtZones != null && districtZones != 'undefined' && districtZones.length > 0) {
-        districtData.map(district => {
-          let districtZone = districtZones.filter(item => {
-            return item.district === district.district;
-          });
-          // add color code based on zone 
-          let iDistrictZone = districtZone[0];
-          if (iDistrictZone != null && iDistrictZone != 'undefined') {
-            let colorsObj = {
-              backgroundColor: '',
-              textColor: ''
-            };
-            switch (iDistrictZone.zone) {
-              case 'Green':
-                colorsObj.backgroundColor = colors.greenZoneBackground;
-                colorsObj.textColor = colors.greenZoneText;
-                break;
-              case 'Red':
-                colorsObj.backgroundColor = colors.redZoneBackground;
-                colorsObj.textColor = colors.redZoneText;
-                break;
-              case 'Orange':
-                colorsObj.backgroundColor = colors.orangZoneBackground;
-                colorsObj.textColor = colors.orangeZoneText;
-                break;
-              default:
-                colorsObj.backgroundColor = colors.actionbarColor;
-                colorsObj.textColor = colors.avatarBorder;
-            }
-            district.colors = colorsObj;
-          }
-          return district;
-        });
-      }
+  useEffect(() => {
+    fetchStateDailyCases();
+  }, []);
+
+  const fetchStateDailyCases = async () => {
+    try {
+      const [
+        { data: statesDailyResponse },
+      ] = await Promise.all([
+        axios.get('https://api.covid19india.org/states_daily.json'),
+      ]);
+
+      // Timeseries
+      const timeSeries = parseStateTimeseries(statesDailyResponse)[state.statecode.toUpperCase()];
+      const timeSeriesForChart = refineDataForChart(timeSeries);
+      setStateTimeSeries(timeSeriesForChart);
+    } catch (err) {
+      console.log(err);
     }
-    return null;
+  };
+
+  const onTapStateInsight = () => {
+
   }
 
   const RenderDistricts = (district, index) => {
@@ -96,20 +76,16 @@ export default DistrictScreen = (props) => {
     );
   }
 
-  const onTapStateInsight = () => {
-
-  }
-
   return (
     <View style={style.mainContainer}>
-      <View style={style.districtContainer}>
+      {stateLiveData && <View style={style.districtContainer}>
         <TouchableHighlight onPress={() => onTapStateInsight()}>
-          <ColumnView totalStat={stateLiveData} title={state.state} />
+          <ColumnView totalStat={stateLiveData} title={state.state} refinedData={stateTimeSeries} />
         </TouchableHighlight>
-      </View>
-      {state && <HeaderView header={['', 'Confirmed', 'Recovered', 'Deceased']} />}
-      {stateData && <FlatList style={{ marginTop: Metrics.tinyMargin }}
-        data={stateData}
+      </View>}
+      {<HeaderView header={['Location', 'Confirmed', 'Recovered', 'Deceased']} />}
+      {districtData && <FlatList style={{ marginTop: Metrics.tinyMargin }}
+        data={districtData}
         renderItem={({ item, index }) => RenderDistricts(item, index)}
         keyExtractor={(item, index) => index.toString()}
       />}

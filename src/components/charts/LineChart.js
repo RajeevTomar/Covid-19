@@ -14,7 +14,7 @@ export default SmallLineChart = ({ data, color }) => {
             }]
         }}
         width={100} // from react-native
-        height={60}
+        height={70}
         withVerticalLabels={false}
         withHorizontalLabels={false}
         withInnerLines={false}
@@ -26,7 +26,6 @@ export default SmallLineChart = ({ data, color }) => {
             backgroundGradientFrom: colors.statBackground,
             backgroundGradientTo: colors.statBackground,
             color: (opacity = 1) => color,
-
             style: {
                 borderRadius: 1
             },

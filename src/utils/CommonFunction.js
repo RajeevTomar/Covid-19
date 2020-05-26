@@ -181,14 +181,102 @@ export const createStatckedData = (confirmedCases, recoveredCases) => {
   if (confirmedCases === null || recoveredCases === null)
     return null;
   let resultArr = [];
-   confirmedCases.forEach((data,index)=>{
-      let stackedArr = [];
-      // recovered
-      stackedArr.push(recoveredCases[index]);
-      // confirmed
-      stackedArr.push(data);
-      // final Arr
-      resultArr.push(stackedArr);
-   });
-   return resultArr;
+  confirmedCases.forEach((data, index) => {
+    let stackedArr = [];
+    // recovered
+    stackedArr.push(recoveredCases[index]);
+    // confirmed
+    stackedArr.push(data);
+    // final Arr
+    resultArr.push(stackedArr);
+  });
+  return resultArr;
+}
+
+export const parseStateTimeseries = ({states_daily: data}) => {
+  const statewiseSeries = Object.keys(STATE_CODES).reduce((a, c) => {
+    a[c] = [];
+    return a;
+  }, {});
+
+  const today = getIndiaDay();
+  for (let i = 0; i < data.length; i += 3) {
+    const date = parse(data[i].date, 'dd-MMM-yy', new Date());
+    // Skip data from the current day
+    if (isBefore(date, today)) {
+      Object.entries(statewiseSeries).forEach(([k, v]) => {
+        const stateCode = k.toLowerCase();
+        const prev = v[v.length - 1] || {};
+        // Parser
+        const dailyconfirmed = +data[i][stateCode] || 0;
+        const dailyrecovered = +data[i + 1][stateCode] || 0;
+        const dailydeceased = +data[i + 2][stateCode] || 0;
+        const totalconfirmed = +data[i][stateCode] + (prev.totalconfirmed || 0);
+        const totalrecovered =
+          +data[i + 1][stateCode] + (prev.totalrecovered || 0);
+        const totaldeceased =
+          +data[i + 2][stateCode] + (prev.totaldeceased || 0);
+        // Push
+        v.push({
+          date: date,
+          dailyconfirmed: dailyconfirmed,
+          dailyrecovered: dailyrecovered,
+          dailydeceased: dailydeceased,
+          totalconfirmed: totalconfirmed,
+          totalrecovered: totalrecovered,
+          totaldeceased: totaldeceased,
+          // Active = Confimed - Recovered - Deceased
+          totalactive: totalconfirmed - totalrecovered - totaldeceased,
+          dailyactive: dailyconfirmed - dailyrecovered - dailydeceased,
+        });
+      });
+    }
+  }
+  return statewiseSeries;
+};
+
+export const fetchDistrictsWithZone = (state, allZone,colors) => {
+  let districtData = sortBaseOnConfirmCases(state.districtData);
+  // filter all district zone based on statecode
+  if (allZone != null && allZone != 'undefined' && allZone.length > 0) {
+    let districtZones = allZone.filter(item => {
+      return item.statecode === state.statecode;
+    });
+    // map with state data
+    if (districtZones != null && districtZones != 'undefined' && districtZones.length > 0) {
+      districtData.map(district => {
+        let districtZone = districtZones.filter(item => {
+          return item.district === district.district;
+        });
+        // add color code based on zone 
+        let iDistrictZone = districtZone[0];
+        if (iDistrictZone != null && iDistrictZone != 'undefined') {
+          let colorsObj = {
+            backgroundColor: '',
+            textColor: ''
+          };
+          switch (iDistrictZone.zone) {
+            case 'Green':
+              colorsObj.backgroundColor = colors.greenZoneBackground;
+              colorsObj.textColor = colors.greenZoneText;
+              break;
+            case 'Red':
+              colorsObj.backgroundColor = colors.redZoneBackground;
+              colorsObj.textColor = colors.redZoneText;
+              break;
+            case 'Orange':
+              colorsObj.backgroundColor = colors.orangZoneBackground;
+              colorsObj.textColor = colors.orangeZoneText;
+              break;
+            default:
+              colorsObj.backgroundColor = colors.actionbarColor;
+              colorsObj.textColor = colors.avatarBorder;
+          }
+          district.colors = colorsObj;
+        }
+        return district;
+      });
+    }
+  }
+  return districtData;
 }
