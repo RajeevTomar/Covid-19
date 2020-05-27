@@ -7,6 +7,8 @@ import {
   parse,
   isBefore,
   startOfDay,
+  differenceInDays,
+  isSameDay,
   format
 } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
@@ -193,17 +195,17 @@ export const createStatckedData = (confirmedCases, recoveredCases) => {
   return resultArr;
 }
 
-export const parseStateTimeseries = ({states_daily: data}) => {
+export const parseStateTimeseries = ({ states_daily: data }) => {
   const statewiseSeries = Object.keys(STATE_CODES).reduce((a, c) => {
     a[c] = [];
     return a;
   }, {});
 
-  //const today = getIndiaDay();
+  const today = new Date();
   for (let i = 0; i < data.length; i += 3) {
     const date = parse(data[i].date, 'dd-MMM-yy', new Date());
     // Skip data from the current day
-    // if (isBefore(date, today)) {
+    if (isBefore(date, today)) {
       Object.entries(statewiseSeries).forEach(([k, v]) => {
         const stateCode = k.toLowerCase();
         const prev = v[v.length - 1] || {};
@@ -230,12 +232,93 @@ export const parseStateTimeseries = ({states_daily: data}) => {
           dailyactive: dailyconfirmed - dailyrecovered - dailydeceased,
         });
       });
-    // }
+    }
   }
   return statewiseSeries;
 };
 
-export const fetchDistrictsWithZone = (state, allZone,colors) => {
+export const parseTotalTestTimeseries = (data) => {
+  const testTimseries = [];
+  const today = new Date();
+  data.forEach((d) => {
+    const date = parse(
+      d.updatetimestamp.split(' ')[0],
+      'dd/MM/yyyy',
+      new Date()
+    );
+    const totaltested = +d.totalsamplestested;
+    if (isBefore(date, today) && totaltested) {
+      let dailytested;
+      if (testTimseries.length) {
+        const prev = testTimseries[testTimseries.length - 1];
+        if (isSameDay(date, prev.date)) {
+          prev.dailytested += totaltested - prev.totaltested;
+          prev.totaltested = totaltested;
+        } else {
+          if (differenceInDays(date, prev.date) === 1)
+            dailytested = totaltested - prev.totaltested;
+          else dailytested = NaN;
+        }
+      } else dailytested = NaN;
+      testTimseries.push({
+        date: date,
+        totaltested: totaltested,
+        dailytested: dailytested,
+      });
+    }
+  });
+  return testTimseries;
+};
+
+export const parseStateTestData = (data) => {
+  const reversed = [...data].reverse();
+  return Object.keys(STATE_CODES_REVERSE).reduce((ret, state) => {
+    const obj = reversed.find(
+      (obj) => obj.state === state && obj.totaltested !== ''
+    );
+    ret[state] = {
+      source: obj?.source1 || obj?.source2,
+      totaltested: obj?.totaltested,
+      updatedon: obj?.updatedon,
+    };
+    return ret;
+  }, {});
+};
+
+
+export const parseStateTestTimeseries = (data) => {
+  const testTimseries = Object.keys(STATE_CODES).reduce((ret, sc) => {
+    ret[sc] = [];
+    return ret;
+  }, {});
+
+  const today = new Date();
+  data.forEach((d) => {
+    const date = parse(d.updatedon, 'dd/MM/yyyy', new Date());
+    const totaltested = +d.totaltested;
+    const stateCode = STATE_CODES_REVERSE[d.state];
+    if (stateCode && isBefore(date, today) && totaltested) {
+      const stateTs = testTimseries[stateCode];
+      let dailytested;
+      if (stateTs.length) {
+        const prev = stateTs[stateTs.length - 1];
+        dailytested =
+          differenceInDays(date, prev.date) === 1
+            ? totaltested - prev.totaltested
+            : NaN;
+      } else dailytested = NaN;
+      stateTs.push({
+        date: date,
+        totaltested: totaltested,
+        dailytested: dailytested,
+      });
+    }
+  });
+  return testTimseries;
+};
+
+
+export const fetchDistrictsWithZone = (state, allZone, colors) => {
   let districtData = sortBaseOnConfirmCases(state.districtData);
   // filter all district zone based on statecode
   if (allZone != null && allZone != 'undefined' && allZone.length > 0) {

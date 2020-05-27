@@ -25,7 +25,6 @@ const Dashboard = (props) => {
     const { colors } = useTheme();
 
     // state
-    //const [appState, setAppState] = useState(AppState.currentState);
     const [refreshing, setRefreshing] = useState(false);
 
 
@@ -35,10 +34,19 @@ const Dashboard = (props) => {
     // redux dispatch
     const dispatch = useDispatch();
 
-    // read data from store
-    const { isLoading, error, allData, stateWise, testData } =
+    // read data from redux store
+    const { isLoading, error, allData, stateWise} =
         useSelector(state => state.allStats);
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            fetchDataFromRemoteAPI();
+        });
+        return unsubscribe;
+    }, []);
+
+    // redux store
     const { liveZone, allZone } = useSelector(state => state.allZones)
 
     const liveData = allData != null ? allData.statewise : null;
@@ -46,25 +54,7 @@ const Dashboard = (props) => {
     // remove first item from list   
     const stateList = (liveData != null && liveData.length > 0) ? liveData.slice(1) : null;
 
-    useEffect(() => {
-        fetchDataFromRemoteAPI();
-
-        // AppState.addEventListener("change", _handleAppStateChange);
-        // return () => {
-        //     AppState.removeEventListener("change", _handleAppStateChange);
-        // };
-
-    }, []);
-
-    // const _handleAppStateChange = nextAppState => {
-    //     if (appState.match(/inactive|background/) && nextAppState === "active") {
-    //         console.log("App has come to the foreground!");
-    //     }
-    //     setAppState(nextAppState);
-    //     fetchDataFromRemoteAPI();
-    // };
-
-    // Country Line Chart Data
+    // CountryTimeSeries Data
     const timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
     const timeSeriesForChart = refineDataForChart(timeSeries);
 
@@ -157,7 +147,7 @@ const Dashboard = (props) => {
         // move to Stat screen 
         // move to the District Screen 
         if (navigation != null && navigation != 'undefined')
-            navigation.navigate('Stat', { refinedData: timeSeriesForChart, totalCounts: liveData[0] });
+            navigation.navigate('Stat', { timeSeries: timeSeries, totalCounts: liveData[0], location:'India' });
 
     }
 

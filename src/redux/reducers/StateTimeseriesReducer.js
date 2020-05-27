@@ -9,6 +9,7 @@ const LIVE_STATE_INITIAL_STATE = {
     error: null,
     isLoading: false,
     stateTimeSeries: null,
+    allStateTestSeries:null,
     
     
 }

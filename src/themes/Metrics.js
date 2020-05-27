@@ -23,6 +23,7 @@ const metrics = {
   cardRadius: 5,
   locationBackgroundHeight: screenHeight * 0.485757121,
   breakHeight: 125,
+  radius:6,
   icons: {
     tiny: 15,
     small: 20,

@@ -6,11 +6,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
-import { fetchDistrictsWithZone, parseStateTimeseries, refineDataForChart } from '../utils/CommonFunction';
+import {
+  fetchDistrictsWithZone, parseStateTimeseries, refineDataForChart,
+  parseStateTestData
+} from '../utils/CommonFunction';
 import ColumnView from '../components/ColumnView';
-import axios from 'axios';
 import { fetchStateTimeSeries } from '.././redux/actions/RemoteAPIAction';
 import ActivityIndicator from '../components/ScreenLoader';
+
 
 
 
@@ -20,8 +23,8 @@ export default DistrictScreen = (props) => {
   const { style } = DistrictScreenStyle();
   const { colors } = useTheme();
 
-  // State
-  //const [stateTimeSeries, setStateTimeSeries] = useState([]);
+  // navigation
+  const navigation = props.navigation;
 
   // read data from navigation param
   const { state, allZone, stateLiveData } = props.route.params;
@@ -33,57 +36,51 @@ export default DistrictScreen = (props) => {
   const dispatch = useDispatch();
 
   // read data from store
-  const { isLoading, error, stateTimeSeries } =
+  const { isLoading, error, stateTimeSeries, allStateTestSeries } =
     useSelector(state => state.stateTimeSeries);
 
-  let stateTimeSeriesForGraph = null;
-  if(stateTimeSeries != null)
-  {
-    const timeSeries = parseStateTimeseries(stateTimeSeries)[state.statecode.toUpperCase()];
-    stateTimeSeriesForGraph = refineDataForChart(timeSeries);
-  }  
-
+  // UserEffect - Component willmount,didupdate & willUnmount
   useEffect(() => {
-    fetchStateDailyCases();
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      fetchStateDailyCases();
+    });
+    return unsubscribe;
+
   }, []);
 
+  // get Data from Cloud API
   const fetchStateDailyCases = () => {
     fetchStateTimeSeries(dispatch);
-
-    // axios.get('https://api.covid19india.org/states_daily.json').
-    //   then(res => {
-    //     if (res != null) {
-    //       const timeSeries = parseStateTimeseries(res.data)[state.statecode.toUpperCase()];
-    //       const timeSeriesForChart = refineDataForChart(timeSeries);
-    //       setStateTimeSeries(timeSeriesForChart);
-    //     }
-    //   }).
-    //   catch(error => {
-
-    //   });
   };
 
 
-  //   try {
-  //     const [
-  //       { data: statesDailyResponse },
-  //     ] = await Promise.all([
-  //       axios.get('https://api.covid19india.org/states_daily.json'),
-  //     ]);
-
-  //     // Timeseries
-  //     const timeSeries = parseStateTimeseries(statesDailyResponse)[state.statecode.toUpperCase()];
-  //     const timeSeriesForChart = refineDataForChart(timeSeries);
-  //     setStateTimeSeries(timeSeriesForChart);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  const onTapStateInsight = () => {
-
+  // parse data for graph
+  let stateTimeSeriesForGraph = null;
+  let timeSeries = null;
+  if (stateTimeSeries != null) {
+    timeSeries = parseStateTimeseries(stateTimeSeries)[state.statecode.toUpperCase()];
+    if (timeSeries != null && timeSeries != 'undefined')
+      stateTimeSeriesForGraph = refineDataForChart(timeSeries);
   }
 
+  const onTapStateInsight = () => {
+    // move to Stat screen 
+    // move to the District Screen 
+    if (navigation != null && navigation != 'undefined' && timeSeries != null) {
+      const parseStateTestDataObj = parseStateTestData(allStateTestSeries);
+      if (parseStateTestDataObj != null) {
+        const stateName = state.state;
+        const stateTestData = parseStateTestDataObj[stateName];
+        navigation.navigate('Stat', {
+          timeSeries: timeSeries, totalCounts: stateLiveData,
+          location: stateName, stateTestData: stateTestData
+        });
+      }
+    }
+  }
+
+  // Render Each row of District
   const RenderDistricts = (district, index) => {
     let zoneTextColor = district.colors ? district.colors.textColor : colors.textColor;
     let zoneBackgroundColor = district.colors ? district.colors.backgroundColor : colors.transparent;
@@ -110,6 +107,7 @@ export default DistrictScreen = (props) => {
     );
   }
 
+  // return the main View 
   return (
     <View style={style.mainContainer}>
       {stateLiveData &&

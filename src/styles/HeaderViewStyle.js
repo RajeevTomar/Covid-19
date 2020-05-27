@@ -15,9 +15,10 @@ export default HeaderViewStyle = () => {
              
         }, headerText:{
             fontSize: Fonts.size.small,
-            padding:Metrics.smallMargin,
             justifyContent:'center',
             fontWeight:'bold',
+            paddingTop:Metrics.smallMargin,
+            paddingBottom:Metrics.smallMargin,
             flex: 1,
             color:colors.textColor,
             alignItems:'center'

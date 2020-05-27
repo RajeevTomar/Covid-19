@@ -5,10 +5,11 @@ import {
 } from 'react-native';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics, Fonts } from '../themes';
-import ActivityIndicator from '../components/ScreenLoader';
 import StatScreenStyle from '../styles/StatScreenStyle';
-import { createIntervalData, createStatckedData } from '../utils/CommonFunction';
+import { createIntervalData, refineDataForChart } from '../utils/CommonFunction';
 import StatChartsConfig from '../styles/ChartStyles';
+import { useSelector } from 'react-redux'
+import { STATE_CODES, STATE_POPULATIONS } from '../Constant';
 
 
 import {
@@ -18,21 +19,39 @@ import {
 
 const StatScreen = (props) => {
 
+    const COUNT_TIME_SERIES = -30;
+
     const { colors } = useTheme();
-    const { refinedData } = props.route.params;
-    const { totalCounts } = props.route.params;
     const { style } = StatScreenStyle();
     const { barChartConfig } = StatChartsConfig();
 
+    // read data from navigation prarams
+    const { timeSeries,totalCounts,location,stateTestData } = props.route.params;
+    const refinedData = refineDataForChart(timeSeries);
+
     // break dates in to intervals
-    const splitDates = createIntervalData(refinedData.dates.slice(-30), 4);
+    const splitDates = createIntervalData(refinedData.dates.slice(COUNT_TIME_SERIES), 8);
+
+    // set Header Title
+    props.navigation.setOptions({ title: location })
+
+
+     // population
+     const population = STATE_POPULATIONS[location];
+     // StatMetaObj for StatMetaCardView
+     const statMetaObj = {
+        testData: stateTestData,
+        population: population,
+        locationStat: totalCounts,
+        lastSevenDaysData: timeSeries.slice(-7),
+      };
 
 
     // Confirmed Data
     const confirmedCases = {
         labels: splitDates,
         datasets: [{
-            data: refinedData.dailyConfirmed.slice(-30)
+            data: refinedData.dailyConfirmed.slice(COUNT_TIME_SERIES)
         }]
     };
 
@@ -40,7 +59,7 @@ const StatScreen = (props) => {
     const recoveredCases = {
         labels: splitDates,
         datasets: [{
-            data: refinedData.dailyRecovered.slice(-30)
+            data: refinedData.dailyRecovered.slice(COUNT_TIME_SERIES)
         }]
     };
 
@@ -86,7 +105,8 @@ const StatScreen = (props) => {
                         showBarTops={true}
                         withOuterLines={true}
                         chartConfig={{ ...barChartConfig, color: (opacity = 1) => colors.red }}
-                        verticalLabelRotation={335}
+                        verticalLabelRotation={340}
+                        showValuesOnTopOfBars={true}
 
                     />
                 </View>
@@ -101,7 +121,7 @@ const StatScreen = (props) => {
                         showBarTops={true}
                         withOuterLines={true}
                         chartConfig={{ ...barChartConfig, color: (opacity = 1) => colors.green }}
-                        verticalLabelRotation={335}
+                        verticalLabelRotation={340}
 
                     />
                 </View>
@@ -115,7 +135,7 @@ const StatScreen = (props) => {
                         accessor="cases"
                         backgroundColor="transparent"
                         paddingLeft="10"
-                        absolute
+                        showValuesOnTopOfBars={true}
                     />
                 </View>
             </ScrollView>
