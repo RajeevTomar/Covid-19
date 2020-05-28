@@ -16,6 +16,7 @@ import { CONTAINMENT_ZONE_MESSAGE } from '../String';
 import { preprocessTimeseries, refineDataForChart } from '../utils/CommonFunction';
 import ColumnView from '../components/ColumnView';
 import LocatedDistrictZoneView from '../components/LocatedDistrictZoneView';
+import { INDIA_LOCATION_CODE } from '../Constant';
 
 
 
@@ -147,7 +148,7 @@ const Dashboard = (props) => {
         // move to Stat screen 
         // move to the District Screen 
         if (navigation != null && navigation != 'undefined')
-            navigation.navigate('Stat', { timeSeries: timeSeries, totalCounts: liveData[0], location:'India' });
+            navigation.navigate('Stat', {locationCode:INDIA_LOCATION_CODE});
 
     }
 

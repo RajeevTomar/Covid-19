@@ -16,6 +16,7 @@ const metrics = {
   doubleSection: 50,
   horizontalLineHeight: 4,
   searchBarHeight: 30,
+  metaCardWith:170,
   screenWidth,
   screenHeight,
   navBarHeight: (Platform.OS === 'ios') ? 64 : 54,

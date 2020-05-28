@@ -6,10 +6,14 @@ import {
 import useTheme from '../themes/ThemeHooks';
 import { Metrics, Fonts } from '../themes';
 import StatScreenStyle from '../styles/StatScreenStyle';
-import { createIntervalData, refineDataForChart } from '../utils/CommonFunction';
+import {
+    preprocessTimeseries, createIntervalData,
+    refineDataForChart, parseStateTimeseries, parseStateTestData,
+} from '../utils/CommonFunction';
 import StatChartsConfig from '../styles/ChartStyles';
 import { useSelector } from 'react-redux'
-import { STATE_CODES, STATE_POPULATIONS } from '../Constant';
+import { INDIA_LOCATION_CODE, STATE_POPULATIONS } from '../Constant';
+import StatMetaView from '../components/StatMetaView';
 
 
 import {
@@ -25,33 +29,69 @@ const StatScreen = (props) => {
     const { style } = StatScreenStyle();
     const { barChartConfig } = StatChartsConfig();
 
+    // variables
+    let timeSeries = null;
+    let timeSeriesForChart = null;
+    let locationData = null;
+    let stateTestData = null;
+
     // read data from navigation prarams
-    const { timeSeries,totalCounts,location,stateTestData } = props.route.params;
-    const refinedData = refineDataForChart(timeSeries);
+    const { locationCode } = props.route.params;
+
+
+    // read data from redux store
+    const { allData } = useSelector(state => state.allStats);
+    if (locationCode === INDIA_LOCATION_CODE) {
+
+        // CountryTimeSeries Data
+        timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
+        locationData = allData.statewise[0];
+    }
+    else {
+        // read state from redux - store
+        const { stateTimeSeries, allStateTestSeries } =
+            useSelector(state => state.stateTimeSeries);
+        const statesData = allData.statewise;
+        //total count 
+        locationData = statesData.filter((state) => {
+            return state.statecode === locationCode;
+        })[0];
+        //time series
+        timeSeries = parseStateTimeseries(stateTimeSeries)[locationCode.toUpperCase()];
+        // parse test series data
+        const parseStateTestDataObj = parseStateTestData(allStateTestSeries);
+        if (parseStateTestDataObj != null) {
+            stateTestData = parseStateTestDataObj[locationData.state];
+        }
+    }
+    // location name
+    const location = locationData.state;
+
+    // Time series for Chart
+    timeSeriesForChart = refineDataForChart(timeSeries);
 
     // break dates in to intervals
-    const splitDates = createIntervalData(refinedData.dates.slice(COUNT_TIME_SERIES), 8);
+    const splitDates = createIntervalData(timeSeriesForChart.dates.slice(COUNT_TIME_SERIES), 8);
 
     // set Header Title
     props.navigation.setOptions({ title: location })
+    // population
+    const population = STATE_POPULATIONS[location];
 
-
-     // population
-     const population = STATE_POPULATIONS[location];
-     // StatMetaObj for StatMetaCardView
-     const statMetaObj = {
+    // StatMetaObj for StatMetaCardView
+    const statMetaObj = {
         testData: stateTestData,
         population: population,
-        locationStat: totalCounts,
+        locationStat: locationData,
         lastSevenDaysData: timeSeries.slice(-7),
-      };
+    };
 
 
     // Confirmed Data
     const confirmedCases = {
         labels: splitDates,
         datasets: [{
-            data: refinedData.dailyConfirmed.slice(COUNT_TIME_SERIES)
+            data: timeSeriesForChart.dailyConfirmed.slice(COUNT_TIME_SERIES)
         }]
     };
 
@@ -59,7 +99,7 @@ const StatScreen = (props) => {
     const recoveredCases = {
         labels: splitDates,
         datasets: [{
-            data: refinedData.dailyRecovered.slice(COUNT_TIME_SERIES)
+            data: timeSeriesForChart.dailyRecovered.slice(COUNT_TIME_SERIES)
         }]
     };
 
@@ -67,21 +107,21 @@ const StatScreen = (props) => {
     const data = [
         {
             name: "Confirmed",
-            cases: parseInt(totalCounts.confirmed),
+            cases: parseInt(locationData.confirmed),
             color: colors.red,
             legendFontColor: colors.redZoneText,
             legendFontSize: Fonts.size.verySmall
         },
         {
             name: "Recovered",
-            cases: parseInt(totalCounts.recovered),
+            cases: parseInt(locationData.recovered),
             color: colors.green,
             legendFontColor: colors.greenZoneText,
             legendFontSize: Fonts.size.verySmall
         },
         {
             name: "Deceased",
-            cases: parseInt(totalCounts.deaths),
+            cases: parseInt(locationData.deaths),
             color: colors.textColor,
             legendFontColor: colors.textColor,
             legendFontSize: Fonts.size.verySmall
@@ -93,12 +133,13 @@ const StatScreen = (props) => {
         <View style={style.mainContainer}>
             <ScrollView>
 
+                <StatMetaView statMetaObj={statMetaObj}></StatMetaView>
 
                 <View style={style.statContainer}>
-                    <Text style={{ ...style.statHeaderText, color: colors.redZoneText }}>Confirmed Cases</Text>
+                    <Text style={{ ...style.statHeaderText, color: colors.red }}>Confirmed Cases</Text>
                     <BarChart
                         data={confirmedCases}
-                        width={Metrics.screenWidth - 50}
+                        width={Metrics.screenWidth - 40}
                         height={160}
                         segments={2}
                         withInnerLines={false}
@@ -111,10 +152,10 @@ const StatScreen = (props) => {
                     />
                 </View>
                 <View style={style.statContainer}>
-                    <Text style={{ ...style.statHeaderText, color: colors.greenZoneText }}>Recovered Cases</Text>
+                    <Text style={{ ...style.statHeaderText, color: colors.green }}>Recovered Cases</Text>
                     <BarChart
                         data={recoveredCases}
-                        width={Metrics.screenWidth - 50}
+                        width={Metrics.screenWidth - 40}
                         height={160}
                         segments={2}
                         withInnerLines={false}
@@ -129,7 +170,7 @@ const StatScreen = (props) => {
                     <Text style={{ ...style.statHeaderText, color: colors.textColor }}>All Cases</Text>
                     <PieChart
                         data={data}
-                        width={Metrics.screenWidth - 50}
+                        width={Metrics.screenWidth - 40}
                         height={160}
                         chartConfig={barChartConfig}
                         accessor="cases"

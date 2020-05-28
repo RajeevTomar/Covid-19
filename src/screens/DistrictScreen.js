@@ -68,15 +68,10 @@ export default DistrictScreen = (props) => {
     // move to Stat screen 
     // move to the District Screen 
     if (navigation != null && navigation != 'undefined' && timeSeries != null) {
-      const parseStateTestDataObj = parseStateTestData(allStateTestSeries);
-      if (parseStateTestDataObj != null) {
-        const stateName = state.state;
-        const stateTestData = parseStateTestDataObj[stateName];
-        navigation.navigate('Stat', {
-          timeSeries: timeSeries, totalCounts: stateLiveData,
-          location: stateName, stateTestData: stateTestData
-        });
-      }
+      const stateName = state.state;
+      navigation.navigate('Stat', {
+        locationCode: state.statecode
+      });
     }
   }
 

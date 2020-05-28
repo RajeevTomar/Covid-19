@@ -34,6 +34,8 @@ const colors = {
     blue:'#0F0',
     green:'#008000',
     white:'white',
+
+    
       
     redShadow: '#E83E3F',
     silver: '#F3F5F6',
