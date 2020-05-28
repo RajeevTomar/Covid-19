@@ -15,7 +15,7 @@ export default StatMetaViewStyle = () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 padding: Metrics.tinyMargin,
-                marginBottom:Metrics.smallMargin,
+                marginBottom:Metrics.tinyMargin,
             }
         }
     );

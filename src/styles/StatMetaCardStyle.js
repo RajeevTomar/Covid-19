@@ -14,7 +14,7 @@ export default StatMetaCardStyle = () => {
                 padding: Metrics.baseMargin,
                 borderRadius: Metrics.radius,
                 borderColor: Metrics.background,
-                width: Metrics.metaCardWith,
+                width: Metrics.screenWidth/2-15,
             },
             title: {
                 fontSize: Fonts.size.small,
