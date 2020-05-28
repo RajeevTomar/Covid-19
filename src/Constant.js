@@ -109,3 +109,5 @@ export const STATE_POPULATIONS = {
   'West Bengal': 96906000,
   Total: 1332900000,
 };
+
+export const POPULATION_SOURCE = 'Based on 2019 population projection by NCP report';

@@ -8,7 +8,7 @@ export default StatMetaCardStyle = () => {
     const { colors } = UseTheme();
 
     const style = StyleSheet.create(
-        {
+        {   
             cardContainer: {
                 backgroundColor: colors.statBackground,
                 padding: Metrics.baseMargin,

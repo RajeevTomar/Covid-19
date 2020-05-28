@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Text, View, Image, FlatList, TouchableHighlight, AppState, ScrollView,
-    RefreshControl,
+    Text, View, ScrollView
 } from 'react-native';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics, Fonts } from '../themes';
+import { parse,format } from 'date-fns';
 import StatScreenStyle from '../styles/StatScreenStyle';
 import {
     preprocessTimeseries, createIntervalData,
     refineDataForChart, parseStateTimeseries, parseStateTestData,
+    
 } from '../utils/CommonFunction';
 import StatChartsConfig from '../styles/ChartStyles';
 import { useSelector } from 'react-redux'
@@ -48,7 +49,22 @@ const StatScreen = (props) => {
         timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
         locationData = allData.statewise[0];
         // set name as India
-        locationData.name ='India';
+        locationData.name = 'India';
+        // parse test data
+        let allTestsArr = allData.tested;
+        if (allTestsArr != null && allTestsArr.length > 0) {
+            const recentTestedObj = allTestsArr[allTestsArr.length - 1];
+            // put data in stateTestData
+            //let updatedOn = format(recentTestedObj?.updatetimestamp,'dd MMM');
+            let updatedOn = format(
+                parse(recentTestedObj?.updatetimestamp, 'dd/MM/yyyy HH:mm:ss', new Date()),
+                'dd/MM/yyyy'
+            );
+            stateTestData = {
+                totaltested: Number.parseInt(recentTestedObj?.totalsamplestested),
+                updatedon: updatedOn,
+            };
+        }
     }
     else {
         // read state from redux - store

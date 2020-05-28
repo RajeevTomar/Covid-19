@@ -40,11 +40,12 @@ const Dashboard = (props) => {
         useSelector(state => state.allStats);
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            // The screen is focused
-            fetchDataFromRemoteAPI();
-        });
-        return unsubscribe;
+        fetchDataFromRemoteAPI();
+        // const unsubscribe = navigation.addListener('focus', () => {
+        //     // The screen is focused
+        //     fetchDataFromRemoteAPI();
+        // });
+        // return unsubscribe;
     }, []);
 
     // redux store

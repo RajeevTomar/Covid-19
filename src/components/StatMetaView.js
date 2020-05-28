@@ -1,11 +1,13 @@
 import React from 'react';
 import {
-     View, 
+    View, Text
 } from 'react-native';
 import StatMetaViewStyle from '../styles/StatMetaViewStyle';
 import { format, parse } from 'date-fns';
 import StatMetaCard from './StatMetaCard';
 import { Metrics } from '../themes';
+import {POPULATION_SOURCE} from '../Constant';
+
 
 
 export default StatMetaView = ({ statMetaObj }) => {
@@ -30,6 +32,7 @@ export default StatMetaView = ({ statMetaObj }) => {
     const activePercent = (active / confirmed) * 100;
     const deathPercent = (deaths / confirmed) * 100;
     const testPerMillion = (testObject?.totaltested / population) * 1000000;
+    const testPerHundred =  (testObject?.totaltested / population) * 100;
     const growthRate =
         ((previousDayData - sevenDayBeforeData) / sevenDayBeforeData) * 100;
     // const totalConfirmedPerMillion =
@@ -43,16 +46,43 @@ export default StatMetaView = ({ statMetaObj }) => {
         )}`
         : '';
 
+    let formatedPopulation = parseInt(population);
+    formatedPopulation = formatedPopulation.toLocaleString('en-IN');
+
+    let totalTested = testObject?.totaltested;
+    if (totalTested != null && totalTested != 'undefined') {
+        totalTested = parseInt(totalTested);
+        totalTested = totalTested.toLocaleString('en-IN');
+    }
+
     return (
         <View style={{ marginTop: Metrics.smallMargin }}>
+            {totalTested &&
+                <View style={style.populationTestView}>
+                    <View style={{flex:1}}>
+                        <Text style={style.title}>Population</Text>
+                        <Text style={style.statistic}>{formatedPopulation}</Text>
+                        {/* <Text style={style.populationSource}>{POPULATION_SOURCE}</Text> */}
+
+                    </View>
+                    <View style={{flex:1, alignItems:'flex-end'}}>
+                        <Text style={style.title}>Tested</Text>
+                        <Text style={style.statistic}>{totalTested}</Text>
+                        { testPerHundred &&
+                            <Text style={style.testedPerPopulation}>{`${testPerHundred.toFixed(2)}%`}</Text>
+                        }
+                    </View>
+                </View>
+            }
+
             <View style={style.statRowContainer}>
+
                 <StatMetaCard
                     className="confirmed"
                     title={'Confirmed Per Million'}
                     statistic={confirmedPerMillion.toFixed(2)}
                     formula={'(confirmed / state population) * 1 Million'}
-                    description={`${Math.round(confirmedPerMillion)} out of every 1 million people in ${stateData.name} have tested positive for the virus.
-            `}
+                    description={`${Math.round(confirmedPerMillion)} out of every 1 million people in ${stateData.name} have tested positive for the virus.`}
                 />
                 <StatMetaCard
                     className="active"
