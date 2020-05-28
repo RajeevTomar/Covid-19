@@ -16,6 +16,7 @@ import { INDIA_LOCATION_CODE, STATE_POPULATIONS } from '../Constant';
 import StatMetaView from '../components/StatMetaView';
 
 
+
 import {
     BarChart,
     PieChart,
@@ -46,6 +47,8 @@ const StatScreen = (props) => {
         // CountryTimeSeries Data
         timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
         locationData = allData.statewise[0];
+        // set name as India
+        locationData.name ='India';
     }
     else {
         // read state from redux - store
@@ -56,6 +59,8 @@ const StatScreen = (props) => {
         locationData = statesData.filter((state) => {
             return state.statecode === locationCode;
         })[0];
+        // set name
+        locationData.name = locationData.state;
         //time series
         timeSeries = parseStateTimeseries(stateTimeSeries)[locationCode.toUpperCase()];
         // parse test series data
@@ -74,7 +79,8 @@ const StatScreen = (props) => {
     const splitDates = createIntervalData(timeSeriesForChart.dates.slice(COUNT_TIME_SERIES), 8);
 
     // set Header Title
-    props.navigation.setOptions({ title: location })
+    props.navigation.setOptions({ title: locationData.name })
+
     // population
     const population = STATE_POPULATIONS[location];
 

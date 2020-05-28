@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-    Text, View, Image, FlatList, TouchableHighlight, AppState, ScrollView,
-    RefreshControl,
+     View, 
 } from 'react-native';
 import StatMetaViewStyle from '../styles/StatMetaViewStyle';
 import { format, parse } from 'date-fns';
@@ -52,7 +51,7 @@ export default StatMetaView = ({ statMetaObj }) => {
                     title={'Confirmed Per Million'}
                     statistic={confirmedPerMillion.toFixed(2)}
                     formula={'(confirmed / state population) * 1 Million'}
-                    description={`${Math.round(confirmedPerMillion)} out of every 1 million people in ${stateData.state} have tested positive for the virus.
+                    description={`${Math.round(confirmedPerMillion)} out of every 1 million people in ${stateData.name} have tested positive for the virus.
             `}
                 />
                 <StatMetaCard

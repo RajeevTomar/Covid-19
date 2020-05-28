@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-    Text, View, Image, FlatList, TouchableHighlight, AppState, ScrollView,
-    RefreshControl,
+    Text, View,
 } from 'react-native';
 import StatMetaCardStyle from '../styles/StatMetaCardStyle';
 
@@ -20,12 +19,12 @@ export default StateMetaCard = ({
 
     return (
 
-        <View style={style.cardContainer}>
+        <View style={{ ...style.cardContainer }}>
             {/* <Text>{className}</Text> */}
-            <Text>{title}</Text>
-            <Text>{statistic}</Text>
-            {date && <Text>{date}</Text>}
-            <Text>{description}</Text>
+            <Text style={{ ...style.title, }}>{title}</Text>
+            <Text style={{ ...style.statistic, }}>{statistic}</Text>
+            {date && <Text style={{ ...style.date, }}>{date}</Text>}
+            <Text style={{ ...style.description}}>{description}</Text>
         </View>
     );
 }

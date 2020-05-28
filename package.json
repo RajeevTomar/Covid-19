@@ -17,6 +17,8 @@
     "axios": "^0.19.2",
     "date-fns": "^2.14.0",
     "date-fns-tz": "^1.0.10",
+    "install": "^0.13.0",
+    "npm": "^6.14.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-appearance": "^0.3.4",
