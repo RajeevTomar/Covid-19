@@ -39,7 +39,7 @@ export default StatMetaCardStyle = () => {
                 justifyContent: 'center',
                 fontWeight: 'normal',
                 flex: 1,
-                color: colors.textColor,
+                color: colors.white,
                 alignItems: 'center'
             },
             description: {
@@ -49,7 +49,7 @@ export default StatMetaCardStyle = () => {
                 marginTop: Metrics.baseMargin,
                 marginBottom: Metrics.smallMargin,
                 flex: 1,
-                color: colors.green,
+                color: colors.textColor,
                 alignItems: 'center'
             },
             

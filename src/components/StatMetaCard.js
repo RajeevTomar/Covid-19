@@ -12,6 +12,7 @@ export default StateMetaCard = ({
     date,
     description,
     className,
+    colorArr,
 }) => {
 
     // style
@@ -19,12 +20,12 @@ export default StateMetaCard = ({
 
     return (
 
-        <View style={{ ...style.cardContainer }}>
+        <View style={{ ...style.cardContainer,backgroundColor:colorArr[0] }}>
             {/* <Text>{className}</Text> */}
-            <Text style={{ ...style.title, }}>{title}</Text>
-            <Text style={{ ...style.statistic, }}>{statistic}</Text>
+            <Text style={{ ...style.title, color:colorArr[1]}}>{title}</Text>
+            <Text style={{ ...style.statistic,color:colorArr[2]}}>{statistic}</Text>
             {date && <Text style={{ ...style.date, }}>{date}</Text>}
-            <Text style={{ ...style.description}}>{description}</Text>
+            <Text style={{ ...style.description,color:colorArr[1]}}>{description}</Text>
         </View>
     );
 }

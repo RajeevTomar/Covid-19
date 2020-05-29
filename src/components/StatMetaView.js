@@ -6,13 +6,15 @@ import StatMetaViewStyle from '../styles/StatMetaViewStyle';
 import { format, parse } from 'date-fns';
 import StatMetaCard from './StatMetaCard';
 import { Metrics } from '../themes';
-import {POPULATION_SOURCE} from '../Constant';
+import { POPULATION_SOURCE } from '../Constant';
+import ThemeHooks from '../themes/ThemeHooks';
 
 
 
 export default StatMetaView = ({ statMetaObj }) => {
 
     const { style } = StatMetaViewStyle();
+    const { colors } = ThemeHooks();
 
     const stateData = statMetaObj.locationStat;
     const testObject = statMetaObj.testData;
@@ -32,7 +34,7 @@ export default StatMetaView = ({ statMetaObj }) => {
     const activePercent = (active / confirmed) * 100;
     const deathPercent = (deaths / confirmed) * 100;
     const testPerMillion = (testObject?.totaltested / population) * 1000000;
-    const testPerHundred =  (testObject?.totaltested / population) * 100;
+    const testPerHundred = (testObject?.totaltested / population) * 100;
     const growthRate =
         ((previousDayData - sevenDayBeforeData) / sevenDayBeforeData) * 100;
     // const totalConfirmedPerMillion =
@@ -46,29 +48,30 @@ export default StatMetaView = ({ statMetaObj }) => {
         )}`
         : '';
 
-    let formatedPopulation = parseInt(population);
-    formatedPopulation = formatedPopulation.toLocaleString('en-IN');
+    // let formatedPopulation = parseInt(population);
+    // formatedPopulation = formatedPopulation.toLocaleString('en-IN');
+    const formatedPopulation = population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    let totalTested = testObject?.totaltested;
-    if (totalTested != null && totalTested != 'undefined') {
-        totalTested = parseInt(totalTested);
-        totalTested = totalTested.toLocaleString('en-IN');
-    }
+    let totalTested = testObject?.totaltested.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // if (totalTested != null && totalTested != 'undefined') {
+    //     totalTested = parseInt(totalTested);
+    //     totalTested = totalTested.toLocaleString('en-IN');
+    // }
 
     return (
         <View style={{ marginTop: Metrics.smallMargin }}>
             {totalTested &&
                 <View style={style.populationTestView}>
-                    <View style={{flex:1}}>
+                    <View style={{ flex: 1 }}>
                         <Text style={style.title}>Population</Text>
                         <Text style={style.statistic}>{formatedPopulation}</Text>
-                        {/* <Text style={style.populationSource}>{POPULATION_SOURCE}</Text> */}
+                        <Text style={style.populationSource}>{POPULATION_SOURCE}</Text>
 
                     </View>
-                    <View style={{flex:1, alignItems:'flex-end'}}>
+                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
                         <Text style={style.title}>Tested</Text>
                         <Text style={style.statistic}>{totalTested}</Text>
-                        { testPerHundred &&
+                        {testPerHundred &&
                             <Text style={style.testedPerPopulation}>{`${testPerHundred.toFixed(2)}%`}</Text>
                         }
                     </View>
@@ -78,6 +81,7 @@ export default StatMetaView = ({ statMetaObj }) => {
             <View style={style.statRowContainer}>
 
                 <StatMetaCard
+                    colorArr={colors.greyColorArr}
                     className="confirmed"
                     title={'Confirmed Per Million'}
                     statistic={confirmedPerMillion.toFixed(2)}
@@ -85,6 +89,7 @@ export default StatMetaView = ({ statMetaObj }) => {
                     description={`${Math.round(confirmedPerMillion)} out of every 1 million people in ${stateData.name} have tested positive for the virus.`}
                 />
                 <StatMetaCard
+                    colorArr={colors.blueColrArr}
                     className="active"
                     title={'Active'}
                     statistic={`${activePercent.toFixed(2)}%`}
@@ -94,6 +99,7 @@ export default StatMetaView = ({ statMetaObj }) => {
             </View>
             <View style={style.statRowContainer}>
                 <StatMetaCard
+                    colorArr={colors.orangeColorArr}
                     className="recovery"
                     title={'Recovery Rate'}
                     statistic={`${recoveryPercent.toFixed(2)}%`}
@@ -101,6 +107,7 @@ export default StatMetaView = ({ statMetaObj }) => {
                     description={`For every 100 confirmed cases,${Math.round(recoveryPercent.toFixed(0))} have recovered from the virus.`}
                 />
                 <StatMetaCard
+                    colorArr={colors.oliveColorArr}
                     className="mortality"
                     title={'Mortality Rate'}
                     statistic={`${deathPercent.toFixed(2)}%`}
@@ -110,6 +117,7 @@ export default StatMetaView = ({ statMetaObj }) => {
             </View>
             <View style={style.statRowContainer}>
                 {!isNaN(testPerMillion) && <StatMetaCard
+                    colorArr={colors.greenColorArr}
                     className="gr"
                     title={'Avg. Growth Rate'}
                     statistic={growthRate > 0 ? `${Math.round(growthRate / 7)}%` : '-'}
@@ -121,6 +129,7 @@ export default StatMetaView = ({ statMetaObj }) => {
                 />}
 
                 {!isNaN(testPerMillion) && <StatMetaCard
+                    colorArr={colors.redColorArr}
                     className="tpm"
                     title={'Tests Per Million'}
                     statistic={`≈ ${Math.round(testPerMillion)}`}

@@ -42,7 +42,7 @@ export default StatMetaViewStyle = () => {
                 alignItems: 'center'
             },
             testedPerPopulation: {
-                fontSize: Fonts.size.small,
+                fontSize: Fonts.size.medium,
                 justifyContent: 'center',
                 fontWeight: 'bold',
                 flex: 1,

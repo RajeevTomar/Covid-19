@@ -63,7 +63,7 @@ export default LocatedDistrictZoneView = ({ title,liveZone,allZone,stateWise }) 
                 <TableView title='Recovered' total={totalStat.recovered} delta={totalStat.deltarecovered} textColor={colors.green} />
                 <TableView title='Deceased' total={totalStat.deaths} delta={totalStat.deltadeaths} textColor={colors.lightColor} />
             </View>}
-            {liveZone.district !== 'NA' && <View style={style.divider} />}
+            {liveZone.district !== 'NA' && <View style={{...style.divider,height:3}} />}
         </View>
     );
 }
