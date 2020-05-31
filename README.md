@@ -9,7 +9,7 @@ It has light and dark mode theme support.
 
 Dashboard Screen
 
-![Simulator Screen Shot - iPhone 7 - 2020-05-18 at 18 17 56](https://user-images.githubusercontent.com/1740986/82214743-ebff9980-9933-11ea-83a4-c7b741f810c3.png)
+![Simulator Screen Shot - iPhone 7 - 2020-05-18 at 18 17 56](https://user-images.githubusercontent.com/1740986/82214743-ebff9980-9933-11ea-83a4-c7b741f810c3.png | width=100)
 
 
 District Wise Cases
