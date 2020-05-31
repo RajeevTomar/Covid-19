@@ -9,7 +9,6 @@ import DashboardStyle from '../styles/DashboardStyle';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics } from '../themes';
 import ActivityIndicator from '../components/ScreenLoader';
-import GetLocation from 'react-native-get-location';
 import StateDistrictCellView from '../components/StateDistrictCellView';
 import HeaderView from '../components/HeaderView';
 import { CONTAINMENT_ZONE_MESSAGE } from '../String';
@@ -17,6 +16,7 @@ import { preprocessTimeseries, refineDataForChart } from '../utils/CommonFunctio
 import ColumnView from '../components/ColumnView';
 import LocatedDistrictZoneView from '../components/LocatedDistrictZoneView';
 import { INDIA_LOCATION_CODE } from '../Constant';
+import Geolocation from '@react-native-community/geolocation';
 
 
 
@@ -27,6 +27,7 @@ const Dashboard = (props) => {
 
     // state
     const [refreshing, setRefreshing] = useState(false);
+    const [appState, setAppState] = useState('inactive');
 
 
     // navigation
@@ -36,17 +37,9 @@ const Dashboard = (props) => {
     const dispatch = useDispatch();
 
     // read data from redux store
-    const { isLoading, error, allData, stateWise} =
+    const { isLoading, error, allData, stateWise } =
         useSelector(state => state.allStats);
 
-    useEffect(() => {
-        fetchDataFromRemoteAPI();
-        // const unsubscribe = navigation.addListener('focus', () => {
-        //     // The screen is focused
-        //     fetchDataFromRemoteAPI();
-        // });
-        // return unsubscribe;
-    }, []);
 
     // redux store
     const { liveZone, allZone } = useSelector(state => state.allZones)
@@ -59,6 +52,21 @@ const Dashboard = (props) => {
     // CountryTimeSeries Data
     const timeSeries = allData != null ? preprocessTimeseries(allData.cases_time_series) : null;
     const timeSeriesForChart = refineDataForChart(timeSeries);
+
+    useEffect(() => {
+        fetchDataFromRemoteAPI();
+        AppState.addEventListener("change", handleAppStateChange);
+        return () => {
+            AppState.removeEventListener("change", handleAppStateChange);
+        };
+    }, []);
+
+    const handleAppStateChange = (nextAppState) => {
+        if (appState.match(/inactive|background/) && nextAppState === "active") {
+            fetchDataFromRemoteAPI();
+        }
+        setAppState(nextAppState);
+    };
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -78,24 +86,24 @@ const Dashboard = (props) => {
         // fetch all live stats and test data
         dispatch(fetchLiveStateWiseAndTestData);
 
-        // get current location
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        }).then(location => {
-            if (location != null) {
+        Geolocation.getCurrentPosition(
+            position => {
+                const location = position?.coords
                 const latitude = location.latitude;
                 const longitude = location.longitude;
                 // fetch all live stats and test data
+                
                 dispatch(fetchZones(latitude, longitude));
                 //dispatch(fetchZones(23.302189, 81.356804));
                 //dispatch(fetchZones(28.535517, 77.391029));
                 //dispatch(fetchZones(27.213606, 78.031471));
-            }
-        }).catch(error => {
-            const { code, message } = error;
-            console.warn(code, message);
-        });
+            },
+            error => {
+                //Alert.alert('Error', JSON.stringify(error));
+                console.log(JSON.stringify(error));
+            },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
     }
 
 
@@ -149,7 +157,7 @@ const Dashboard = (props) => {
         // move to Stat screen 
         // move to the District Screen 
         if (navigation != null && navigation != 'undefined')
-            navigation.navigate('Stat', {locationCode:INDIA_LOCATION_CODE});
+            navigation.navigate('Stat', { locationCode: INDIA_LOCATION_CODE });
 
     }
 

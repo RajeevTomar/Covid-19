@@ -4,17 +4,18 @@ import {
 } from 'react-native';
 import useTheme from '../themes/ThemeHooks';
 import { Metrics, Fonts } from '../themes';
-import { parse,format } from 'date-fns';
+import { parse, format } from 'date-fns';
 import StatScreenStyle from '../styles/StatScreenStyle';
 import {
     preprocessTimeseries, createIntervalData,
     refineDataForChart, parseStateTimeseries, parseStateTestData,
-    
+
 } from '../utils/CommonFunction';
 import StatChartsConfig from '../styles/ChartStyles';
 import { useSelector } from 'react-redux'
-import { INDIA_LOCATION_CODE, STATE_POPULATIONS } from '../Constant';
+import { INDIA_LOCATION_CODE, STATE_POPULATIONS, POPULATION_SOURCE } from '../Constant';
 import StatMetaView from '../components/StatMetaView';
+
 
 
 
@@ -151,12 +152,31 @@ const StatScreen = (props) => {
 
     ];
 
+    const formatedPopulation = population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let totalTested = stateTestData?.totaltested.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const testPerHundred = (stateTestData?.totaltested / population) * 100;
+
+
     return (
         <View style={style.mainContainer}>
             <ScrollView>
+                {totalTested &&
+                    <View style={style.populationTestView}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={style.title}>Population</Text>
+                            <Text style={style.statistic}>{formatedPopulation}</Text>
+                            <Text style={style.populationSource}>{POPULATION_SOURCE}</Text>
 
-                <StatMetaView statMetaObj={statMetaObj}></StatMetaView>
-
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                            <Text style={style.title}>Tested</Text>
+                            <Text style={style.statistic}>{totalTested}</Text>
+                            {testPerHundred &&
+                                <Text style={style.testedPerPopulation}>{`${testPerHundred.toFixed(2)}%`}</Text>
+                            }
+                        </View>
+                    </View>
+                }
                 <View style={style.statContainer}>
                     <Text style={{ ...style.statHeaderText, color: colors.red }}>Confirmed Cases</Text>
                     <BarChart
@@ -201,6 +221,7 @@ const StatScreen = (props) => {
                         showValuesOnTopOfBars={true}
                     />
                 </View>
+                <StatMetaView statMetaObj={statMetaObj}></StatMetaView>
             </ScrollView>
         </View>
     );

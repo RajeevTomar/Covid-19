@@ -42,12 +42,6 @@ export default DistrictScreen = (props) => {
   // UserEffect - Component willmount,didupdate & willUnmount
   useEffect(() => {
     fetchStateDailyCases();
-    // const unsubscribe = navigation.addListener('focus', () => {
-    //   // The screen is focused
-    //   fetchStateDailyCases();
-    // });
-    // return unsubscribe;
-
   }, []);
 
   // get Data from Cloud API
