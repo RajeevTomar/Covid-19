@@ -7,15 +7,32 @@ This project analyzes the patients data obtained from the APIs built by Covid19I
 It has light and dark mode theme support.
 
 
-Dashboard Screen
+#### Covid-19 App Screenshots
 
-![Simulator Screen Shot - iPhone 7 - 2020-05-18 at 18 17 56](https://user-images.githubusercontent.com/1740986/82214743-ebff9980-9933-11ea-83a4-c7b741f810c3.png)
+<table>
+  <tr>
+    <td> Dashboard Screen</td>
+     <td> Stat Screen</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/1740986/83356567-a2c43680-a384-11ea-875f-218f3948a2c4.png" width=300></td>
+    <td><img src="https://user-images.githubusercontent.com/1740986/83356727-8aa0e700-a385-11ea-955d-8511dd9d53a1.png" width=300></td>
+  </tr>
+ </table>
+ <br/>
+ <table>
+  <tr>
+    <td> District Screen</td>
+     <td> District Stat Screen</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/1740986/83356590-b96a8d80-a384-11ea-9687-57aa3d64c66b.png" width=300></td>
+    <td><img src="https://user-images.githubusercontent.com/1740986/83356585-b4a5d980-a384-11ea-89c7-7a37b4bcafcc.png" width=300></td>
+  </tr>
+ </table>
 
 
-District Wise Cases
-
-![Simulator Screen Shot - iPhone 7 - 2020-05-18 at 18 17 59](https://user-images.githubusercontent.com/1740986/82214771-f28e1100-9933-11ea-8d72-48c475ebeab7.png)
-
+  
 
 # Credits
 
