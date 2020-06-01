@@ -6,8 +6,13 @@ This project analyzes the patients data obtained from the APIs built by Covid19I
 
 It has light and dark mode theme support.
 
+# Download
 
-#### Covid-19 App Screenshots
+<a href="http://positivemind.co.in/apk/covid-19_v1.1.apk"> Download Android App</a>
+
+
+
+# Covid-19 App Screenshots
 
 <table>
   <tr>
