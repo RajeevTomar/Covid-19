@@ -9,6 +9,7 @@ import StatScreen from '../screens/StatScreen';
 import NewsListScreen from '../screens/NewsListScreen';
 import colors from '../themes/Colors';
 import TabIconView from './TabIconView';
+import NewsArticleScreen from '../screens/NewsArticleScreen';
 
 
 
@@ -63,6 +64,10 @@ function NewsStackScreen() {
         component={NewsListScreen}
         options={{ title: 'HEADLINES', headerTitleAlign: 'center' }}
       />
+      <Stack.Screen name="Article"
+          component={NewsArticleScreen}
+          options={{ headerShown:false }}
+        />
     </NewsStack.Navigator>
   );
 }

@@ -4,9 +4,9 @@ import useTheme from '../themes/ThemeHooks';
 
 export default NewsArticleStyle = () => {
   const {colors} = useTheme();
-  const style= StyleSheet.create({
+  const styles= StyleSheet.create({
 
-    ...ApplicationStyles.screen,
+    ...ApplicationStyles().style.screen,
     title: {
       fontSize: Fonts.size.doubleExtraLarge,
       color: colors.textColor,
@@ -78,5 +78,5 @@ export default NewsArticleStyle = () => {
     }
 
   });
-  return {style};
+  return {styles};
 }
