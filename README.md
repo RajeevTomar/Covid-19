@@ -35,6 +35,16 @@ It has light and dark mode theme support.
     <td><img src="https://user-images.githubusercontent.com/1740986/83356585-b4a5d980-a384-11ea-89c7-7a37b4bcafcc.png" width=300></td>
   </tr>
  </table>
+ <table>
+  <tr>
+    <td> Covid News Screen</td>
+     <td> Article Detail Screen</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/1740986/86532928-16f57b00-beeb-11ea-83b0-d8524e7ef8d0.png" width=300></td>
+    <td><img src="https://user-images.githubusercontent.com/1740986/86532947-47d5b000-beeb-11ea-9f46-e4a0c398f69a.png" width=300></td>
+  </tr>
+ </table>
 
 
   
@@ -43,3 +53,4 @@ It has light and dark mode theme support.
 
 1. Team behind Covid19India for gathering statistics across India and providing API. https://www.covid19india.org/
 2. GeoIQ for providing API for location based Covid19 information. https://www.geoiq.io/
+3. Getting Covid-19 News form https://newsapi.org/
