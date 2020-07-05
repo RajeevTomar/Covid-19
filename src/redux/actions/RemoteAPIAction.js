@@ -8,30 +8,38 @@ import {
     LIVE_DAILY_DATA_URL, STATE_DISTRICT_WISE_URL, CURRENT_LOC_ZONE_URL, ZONE_DATA_URL,
     TEST_DATA_URL, STATE_DAILY_DATA_URL
 } from '../../server/Url';
-import { ZONE_API_KEY } from '../../Constant';
+import { ZONE_API_KEY } from '../../server/Config';
 
-export const fetchLiveStateWiseAndTestData = (dispatch) => {
-    // show loading
-    dispatchActions(dispatch, SHOW_LOADING, true);
-    // return (dispatch) => {
-    Promise.all([
-        axios.get(LIVE_DAILY_DATA_URL),
-        axios.get(STATE_DISTRICT_WISE_URL),
-    ]).then(responses => {
-        // save responses in store and dispatch
-        dispatchActions(dispatch, FETCH_STATE_DISTRICT_TEST_DATA,
-            {
-                allData: responses[0].data,
-                stateWise: responses[1].data,
-            });
-    }).catch(error => {
-        dispatchActions(dispatch, HTTP_ERROR, error);
-    });
+
+
+
+
+
+export const fetchLiveStateWiseAndTestData = () => {
+    return (dispatch) => {
+        // show loading
+        dispatchActions(dispatch, SHOW_LOADING, true);
+        // return (dispatch) => {
+        Promise.all([
+            axios.get(LIVE_DAILY_DATA_URL),
+            axios.get(STATE_DISTRICT_WISE_URL),
+        ]).then(responses => {
+            // save responses in store and dispatch
+            dispatchActions(dispatch, FETCH_STATE_DISTRICT_TEST_DATA,
+                {
+                    allData: responses[0].data,
+                    stateWise: responses[1].data,
+                });
+        }).catch(error => {
+            dispatchActions(dispatch, HTTP_ERROR, error);
+        });
+    }
+
 }
 // };
 
 export const fetchZones = (latitude, longitude) => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         Promise.all([
             axios.post(CURRENT_LOC_ZONE_URL, {
                 key: ZONE_API_KEY,
@@ -51,23 +59,27 @@ export const fetchZones = (latitude, longitude) => {
     }
 }
 
-export const fetchStateTimeSeries = (dispatch) => {
-    // show loading
-    dispatchActions(dispatch, SHOW_LOADING_STATE, true);
-    Promise.all([
-        axios.get(STATE_DAILY_DATA_URL),
-        axios.get(TEST_DATA_URL),
-    ]).then(responses => {
-        // save responses in store and dispatch
-        dispatchActions(dispatch, FETCH_STATE_DAILY_CASES,
-            {
-                stateTimeSeries: responses[0].data,
-                allStateTestSeries:responses[1].data.states_tested_data
-            });
-    }).catch(error => {
-        dispatchActions(dispatch, STATE_HTTP_ERROR, error);
-    });
+export const fetchStateTimeSeries = () => {
+    return (dispatch) => {
+        // show loading
+        dispatchActions(dispatch, SHOW_LOADING_STATE, true);
+        Promise.all([
+            axios.get(STATE_DAILY_DATA_URL),
+            axios.get(TEST_DATA_URL),
+        ]).then(responses => {
+            // save responses in store and dispatch
+            dispatchActions(dispatch, FETCH_STATE_DAILY_CASES,
+                {
+                    stateTimeSeries: responses[0].data,
+                    allStateTestSeries: responses[1].data.states_tested_data
+                });
+        }).catch(error => {
+            dispatchActions(dispatch, STATE_HTTP_ERROR, error);
+        });
+    }
+
 }
+
 
 
 

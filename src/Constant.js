@@ -1,8 +1,8 @@
-//KEYS
-export const ZONE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtYWlsSWRlbnRpdHkiOiJyYWppdmtubWlldDA2QGdtYWlsLmNvbSJ9.Ip6bFLJi6YlG6nXrggib5ZHJQZfTJE1qcOifJl-kpSY'
-
 
 export const INDIA_LOCATION_CODE = 'TT';  
+export const TOP_HEADLINES = 'top-headlines';
+export const EVERYTHING = 'everything';
+
 
 export const STATE_ROW_STATISTICS = [
   'confirmed',

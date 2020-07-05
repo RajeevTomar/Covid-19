@@ -46,7 +46,7 @@ export default DistrictScreen = (props) => {
 
   // get Data from Cloud API
   const fetchStateDailyCases = () => {
-    fetchStateTimeSeries(dispatch);
+    dispatch(fetchStateTimeSeries());
   };
 
 

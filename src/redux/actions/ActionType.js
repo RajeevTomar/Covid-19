@@ -7,3 +7,8 @@ export const ZONE_HTTP_ERROR ='http_error_zone';
 export const STATE_HTTP_ERROR ='http_error_state';
 export const SHOW_LOADING_ZONE ='loading_zone';
 export const SHOW_LOADING_STATE ='loading_state';
+
+// News
+export const NEWS_ERROR ='http_error_news';
+export const SHOW_LOADING_NEWS ='loading_news';
+export const TOP_HEADLINES_SUCCESS ='top_headline_success';

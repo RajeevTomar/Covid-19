@@ -84,7 +84,7 @@ const Dashboard = (props) => {
     const fetchDataFromRemoteAPI = () => {
         // make api call here
         // fetch all live stats and test data
-        dispatch(fetchLiveStateWiseAndTestData);
+        dispatch(fetchLiveStateWiseAndTestData());
 
         Geolocation.getCurrentPosition(
             position => {
