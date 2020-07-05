@@ -33,7 +33,7 @@ export default NewsArticleStyle = () => {
     },
     source: {
       fontSize: Fonts.size.large,
-      color: colors.textColor,
+      color: colors.lightColor,
       marginTop: Metrics.marginHorizontal,
       fontWeight: 'normal',
       justifyContent: 'flex-start',
