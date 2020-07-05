@@ -8,7 +8,7 @@ It has light and dark mode theme support.
 
 # Download
 
-<a href="http://positivemind.co.in/apk/covid-19_v1.1.apk"> Download Android App</a>
+<a href="http://positivemind.co.in/apk/covid-19_v1.2.apk"> Download Android App</a>
 
 
 
