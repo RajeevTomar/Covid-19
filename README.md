@@ -1,5 +1,5 @@
 # Covid-19
-report cases of Covid-19 India and notification in the current location if any new case comes.It will let you know if you are in Containment, Red, Orange or Green zone.
+Report cases of Covid-19 India and notification in the current location if any new case comes.It will let you know if you are in Containment, Red, Orange or Green zone.
 
 This project analyzes the patients data obtained from the APIs built by Covid19India https://api.covid19india.org/ and fetch the affected zone data from - https://data.geoiq.io/dataapis/v1.0/covid/locationcheck.
 
