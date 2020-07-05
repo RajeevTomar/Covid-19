@@ -33,7 +33,7 @@ export default NewsArticleStyle = () => {
     },
     source: {
       fontSize: Fonts.size.large,
-      color: colors.lightColor,
+      color: colors.textColor,
       marginTop: Metrics.marginHorizontal,
       fontWeight: 'normal',
       justifyContent: 'flex-start',
@@ -57,6 +57,13 @@ export default NewsArticleStyle = () => {
       fontWeight: 'normal',
       alignItems: 'center',
 
+    },
+    moreDetail: {
+      fontSize: Fonts.size.medium,
+      color: colors.lightColor,
+      padding: Metrics.baseMargin,
+      fontWeight: 'normal',
+      alignItems: 'center'
     },
     image: {
       height: '100%',

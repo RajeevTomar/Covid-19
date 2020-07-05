@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableHighlight } from 'react-native'
+import { Text, View, Image, TouchableHighlight,Linking } from 'react-native'
 import NewsArticleStyle from '../styles/NewsArticleStyle'
 import AsyncImage from '../components/AsyncImage';
 import { Colors } from '../themes';
@@ -26,7 +26,7 @@ const NewsArticle = (props) => {
   const navigation = props.navigation;
 
   // styles
-  const {styles} = NewsArticleStyle();
+  const { styles } = NewsArticleStyle();
 
   // fetch article from props
   const article = props.route.params.article;
@@ -53,6 +53,9 @@ const NewsArticle = (props) => {
             {date}</Text>
         </View>
         <Text style={styles.description}>{article.description}</Text>
+        <Text style={styles.moreDetail}
+          onPress={() => Linking.openURL(article.url)}>
+          Read Full Article</Text>
       </View>
       <TouchableHighlight style={styles.circleView} onPress={() => navigation.goBack()}>
         <Image style={styles.circleImage} source={require('../images/ic_back_arrow.png')} />
