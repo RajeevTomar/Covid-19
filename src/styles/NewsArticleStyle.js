@@ -9,7 +9,7 @@ export default NewsArticleStyle = () => {
     ...ApplicationStyles().style.screen,
     title: {
       fontSize: Fonts.size.doubleExtraLarge,
-      color: colors.textColor,
+      color: colors.white,
       marginTop: Metrics.marginHorizontal,
       marginLeft: Metrics.smallMargin,
       marginRight: Metrics.smallMargin,
@@ -33,7 +33,7 @@ export default NewsArticleStyle = () => {
     },
     source: {
       fontSize: Fonts.size.large,
-      color: colors.textColor,
+      color: colors.white,
       marginTop: Metrics.marginHorizontal,
       fontWeight: 'normal',
       justifyContent: 'flex-start',
@@ -43,7 +43,7 @@ export default NewsArticleStyle = () => {
     },
     date: {
       fontSize: Fonts.size.large,
-      color: colors.textColor,
+      color: colors.white,
       marginTop: Metrics.marginHorizontal,
       fontWeight: 'normal',
       justifyContent: 'flex-end',
@@ -52,7 +52,7 @@ export default NewsArticleStyle = () => {
     },
     description: {
       fontSize: Fonts.size.medium,
-      color: colors.textColor,
+      color: colors.white,
       padding: Metrics.baseMargin,
       fontWeight: 'normal',
       alignItems: 'center',
