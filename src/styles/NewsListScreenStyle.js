@@ -37,7 +37,7 @@ export default NewsListStyle = () => {
     bottomView: {
       padding: Metrics.smallMargin,
       flex: 1,
-      backgroundColor: colors.windowTint,
+      backgroundColor: colors.windowLighTint,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-end'

@@ -52,9 +52,9 @@ export default NewsArticleStyle = () => {
     },
     description: {
       fontSize: Fonts.size.medium,
-      color: colors.sourceColor,
+      color: colors.textColor,
       padding: Metrics.baseMargin,
-      fontWeight: 'bold',
+      fontWeight: 'normal',
       alignItems: 'center',
 
     },
