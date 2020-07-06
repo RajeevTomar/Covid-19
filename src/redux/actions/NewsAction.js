@@ -24,7 +24,7 @@ export const fetchTopHeadlines = () => {
         });
         axiosClient({
             method: 'get',
-            url: BASE_URL_NEWS + EVERYTHING,
+            url: BASE_URL_NEWS + TOP_HEADLINES,
             params: {q:'covid'}
         }).then(res => {
             dispatchActions(dispatch, TOP_HEADLINES_SUCCESS, res.data.articles);
