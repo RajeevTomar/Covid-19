@@ -45,23 +45,27 @@ const NewsListScreen = (props) => {
     return (
       <TouchableHighlight
         onPress={() => onTapNewsArticle(article, index)}>
-        <View style={styles.newsItemContainer}>
-          <AsyncImage style={styles.image}
-            source={{
-              uri: article.urlToImage
-            }}
-            placeholderColor={colors.background} />
-          <View style={styles.bottomView}>
-            <Text style={styles.source}>
-              {article.source.name}</Text>
-            <Text style={styles.date}>
-              {date}</Text>
+        { article && 
+          <View style={styles.newsItemContainer}>
+
+            <AsyncImage style={styles.image}
+              source={{
+                uri: article.urlToImage
+              }}
+              placeholderColor={colors.background} />
+            <View style={styles.bottomView}>
+              {article.source && <Text style={styles.source}>
+                {article.source.name}</Text>}
+              <Text style={styles.date}>
+                {date}</Text>
+            </View>
+            <View style={styles.titleView}>
+              <Text numberOfLines={3} style={styles.title}>
+                {article.title}</Text>
+            </View>
           </View>
-          <View style={styles.titleView}>
-            <Text numberOfLines={3} style={styles.title}>
-              {article.title}</Text>
-          </View>
-        </View>
+        }
+
       </TouchableHighlight>
     );
   }

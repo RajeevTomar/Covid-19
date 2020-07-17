@@ -12,8 +12,8 @@ export default LocatedDistrictZoneView = ({ title,liveZone,allZone,stateWise }) 
     const {colors} = useTheme();
     
     let totalStat = null;
-    let zoneType = liveZone.districtZoneType;
-    let zoneBackgroundColor = getZoneBackgroundColor(zoneType,colors);
+    //let zoneType = liveZone.districtZoneType;
+    let zoneBackgroundColor = getZoneBackgroundColor(liveZone,colors);
 
     // filter data bw liveZone and allZone
     let liveZoneDistrict = liveZone.district;
@@ -56,7 +56,7 @@ export default LocatedDistrictZoneView = ({ title,liveZone,allZone,stateWise }) 
                 backgroundColor: zoneBackgroundColor
             }}>
                 <Text style={{...style.zoneLocationText,color:colors.white}}>{title}</Text>
-                <Text style={{...style.zoneLocationText,color:colors.white}}>{zoneType}</Text>
+                {/* <Text style={{...style.zoneLocationText,color:colors.white}}>{zoneType}</Text> */}
             </View>}
             {totalStat && <View style={style.rowContainer}>
                 <TableView title='Confirmed' total={totalStat.confirmed} delta={totalStat.deltaconfirmed} textColor={colors.red} />
@@ -68,17 +68,23 @@ export default LocatedDistrictZoneView = ({ title,liveZone,allZone,stateWise }) 
     );
 }
 
-const getZoneBackgroundColor = (zoneType,colors) => {
-    zoneType = zoneType.replace(/ +/g, "").toLowerCase();
-    switch (zoneType) {
-        case 'orangezone':
-            return colors.lightColor;
-        case 'redzone':
-            return colors.red;
-        case 'greenzone':
-            return colors.green;
-        default:
-            return colors.textColor;
+const getZoneBackgroundColor = (liveZone,colors) => {
+    if(liveZone.inContainmentZone)
+    {
+         return colors.red;
     }
+    else
+    return colors.green;
+    // zoneType = zoneType.replace(/ +/g, "").toLowerCase();
+    // switch (zoneType) {
+    //     case 'orangezone':
+    //         return colors.lightColor;
+    //     case 'redzone':
+    //         return colors.red;
+    //     case 'greenzone':
+    //         return colors.green;
+    //     default:
+    //         return colors.textColor;
+    // }
 
 }
